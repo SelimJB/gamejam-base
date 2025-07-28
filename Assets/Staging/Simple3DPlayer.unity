@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 711127972}
   - component: {fileID: 711127971}
   m_Layer: 0
-  m_Name: Temp
+  m_Name: Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,13 +457,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 711127970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7a7cd25ee5949eca5b5b00a944c1cf8, type: 3}
+  m_Script: {fileID: 11500000, guid: ae9093de5eb4490fb9104eafb6817fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: woosh3
-  audioClip: {fileID: 8300000, guid: 39ea2a90f788e2544b4ce6be15d3fbd5, type: 3}
-  audioClip2: {fileID: 8300000, guid: ed185c72be4f811419baffa7a1db393d, type: 3}
-  audioManager: {fileID: 0}
+  testClip: {fileID: 8300000, guid: 0d2b629d54a86a348828312e64933bce, type: 3}
+  stringClip: woosh2
+  testNullableFloat:
+    hasValue: 1
+    value: 2
 --- !u!4 &711127972
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -23,7 +22,6 @@ namespace CoreSystems.Audio
 		[SerializeField] private int sfxMaxSources = 20;
 
 		private static AudioManager instance;
-		private AudioClip currentMusic;
 
 		public AudioLibrary AudioLibrary => audioLibrary;
 		public static AudioManager Instance
@@ -55,12 +53,11 @@ namespace CoreSystems.Audio
 
 		private void Start()
 		{
-			currentMusic = music;
 			musicSource.clip = music;
 			if (playMusicOnStart)
 				musicSource.Play();
 		}
-		
+
 		public void PlayMusic(AudioClip newClip = null, bool loop = true)
 		{
 			if (newClip != null)
