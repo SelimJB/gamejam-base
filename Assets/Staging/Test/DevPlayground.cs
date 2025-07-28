@@ -34,5 +34,11 @@ namespace Staging
 			Gizmos.color = Color.magenta;
 			CustomGizmos.DrawCross(new Vector2(0, 0), 2f);
 		}
+		
+		[EditorButton]
+		private void TestEditorButton()
+		{
+			Debug.Log("Button clicked!");
+		}
 	}
 }

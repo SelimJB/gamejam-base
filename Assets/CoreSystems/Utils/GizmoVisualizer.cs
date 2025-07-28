@@ -3,7 +3,7 @@
 namespace Utils
 {
 	[ExecuteInEditMode]
-	public class GizmoDrawer : MonoBehaviour
+	public class GizmoVisualizer : MonoBehaviour
 	{
 		[SerializeField] private string label;
 		[SerializeField] private bool displayGizmo = true;
