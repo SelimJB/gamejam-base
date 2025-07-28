@@ -4,7 +4,7 @@ using Utils;
 
 namespace Staging
 {
-	public class Tester : MonoBehaviour
+	public class DevPlayground : MonoBehaviour
 	{
 		[SerializeField, PreviewAudioClip] private AudioClip testClip;
 		[SerializeField, PreviewAudioClip] private string stringClip;
