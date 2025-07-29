@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4990805823270480327}
   - component: {fileID: 3048579437918345215}
+  - component: {fileID: 1801029279450081941}
   m_Layer: 0
   m_Name: MusicSource
   m_TagString: Untagged
@@ -41,7 +42,7 @@ AudioSource:
   m_GameObject: {fileID: 4303154399846862862}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: e21476472e44a4359ba42d57a511057b, type: 2}
+  OutputAudioMixerGroup: {fileID: 5003480011082968315, guid: e21476472e44a4359ba42d57a511057b, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -129,6 +130,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!169 &1801029279450081941
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4303154399846862862}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.08140064
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7209462336593477512
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,8 +205,8 @@ MonoBehaviour:
   musicSource: {fileID: 3048579437918345215}
   sfxSources: []
   isMasterMuted: 0
+  lowPassFilter: {fileID: 1801029279450081941}
   music: {fileID: 8300000, guid: 62ae18297f3e4904aad3777cac14b17d, type: 3}
   playMusicOnStart: 1
   sfxAudioSourcePrefab: {fileID: 4115829403408168385, guid: 051cae020d112441db4fc3860225c844, type: 3}
   sfxMaxSources: 20
-  testClip2: {fileID: 8300000, guid: 1cadb50770b4fe64fb77091cf864aeb6, type: 3}

@@ -12,6 +12,7 @@ namespace CoreSystems.Audio
 		[SerializeField] private AudioSource musicSource;
 		[SerializeField] private List<AudioSource> sfxSources = new();
 		[SerializeField] private bool isMasterMuted;
+		[SerializeField] private AudioLowPassFilter lowPassFilter;
 
 		[Header("Music")]
 		[SerializeField] private AudioClip music;
@@ -21,9 +22,9 @@ namespace CoreSystems.Audio
 		[SerializeField] private AudioSource sfxAudioSourcePrefab;
 		[SerializeField] private int sfxMaxSources = 20;
 
-		private static AudioManager instance;
-
 		public AudioLibrary AudioLibrary => audioLibrary;
+
+		private static AudioManager instance;
 		public static AudioManager Instance
 		{
 			get
@@ -50,12 +51,16 @@ namespace CoreSystems.Audio
 			}
 		}
 
-
 		private void Start()
 		{
 			musicSource.clip = music;
 			if (playMusicOnStart)
 				musicSource.Play();
+		}
+
+		public void EnableLowPassFilter(bool enable)
+		{
+			lowPassFilter.enabled = enable;
 		}
 
 		public void PlayMusic(AudioClip newClip = null, bool loop = true)
