@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 21440838688cd494f84d6c6d95aff83d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - PIXY
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
