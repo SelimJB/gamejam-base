@@ -3,7 +3,7 @@ using System.Linq;
 using CoreSystems.Audio.Editor;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Audio Library")]
+[CreateAssetMenu(menuName = "ScriptableObjects/Audio/Audio Library", order = -1000)]
 public class AudioLibrary : ScriptableObject
 {
 	[SerializeField] private List<AudioClip> clips;
