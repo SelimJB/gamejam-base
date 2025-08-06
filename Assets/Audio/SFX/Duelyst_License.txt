@@ -1,0 +1,4 @@
+Audio assets from Duelyst
+Original project: https://github.com/open-duelyst/duelyst
+License: CC0 1.0 Universal (Public Domain)
+https://creativecommons.org/publicdomain/zero/1.0/
