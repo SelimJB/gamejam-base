@@ -22,8 +22,17 @@ namespace CoreSystems.Audio.Editor
 				audioItem.SetClip(clip);
 
 				var clipPath = AssetDatabase.GetAssetPath(clip);
-				var directory = Path.GetDirectoryName(clipPath);
-				var assetPath = Path.Combine(directory, clip.name + "_AudioClipProfile.asset");
+				var clipDirectory = Path.GetDirectoryName(clipPath);
+				var profilesDirectory = Path.Combine(clipDirectory, "AudioClipProfiles");
+
+				if (!Directory.Exists(profilesDirectory))
+				{
+					Directory.CreateDirectory(profilesDirectory);
+					AssetDatabase.Refresh();
+				}
+
+				var clipName = clip.name.Replace(" ", "_").Replace("(", "").Replace(")", "");
+				var assetPath = Path.Combine(profilesDirectory, $"{clipName}_AudioClipProfile.asset");
 				assetPath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
 
 				AssetDatabase.CreateAsset(audioItem, assetPath);

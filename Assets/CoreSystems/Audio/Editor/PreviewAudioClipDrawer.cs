@@ -25,7 +25,6 @@ namespace CoreSystems.Audio.Editor
 		{
 			var baseHeight = EditorGUIUtility.singleLineHeight;
 
-			// Check if property is valid before accessing it
 			if (property == null || !IsPropertyValid(property))
 			{
 				return baseHeight;
@@ -34,7 +33,6 @@ namespace CoreSystems.Audio.Editor
 			if (showProfileDropdown && currentProperty != null && IsPropertyValid(currentProperty) &&
 			    currentProperty.propertyPath == property.propertyPath)
 			{
-				// Calculate dynamic height based on content
 				var dropdownHeight = CalculateDropdownHeight(property);
 				return baseHeight + dropdownHeight;
 			}
@@ -45,10 +43,9 @@ namespace CoreSystems.Audio.Editor
 		private bool IsPropertyValid(SerializedProperty property)
 		{
 			if (property == null) return false;
-			
+
 			try
 			{
-				// Try to access a basic property to check if it's disposed
 				var _ = property.propertyPath;
 				return property.serializedObject != null && property.serializedObject.targetObject != null;
 			}
@@ -60,19 +57,17 @@ namespace CoreSystems.Audio.Editor
 
 		private float CalculateDropdownHeight(SerializedProperty property)
 		{
-			if (property == null || !IsPropertyValid(property)) return 100f; // Fallback height
+			if (property == null || !IsPropertyValid(property)) return 100f;
 
 			var lineHeight = EditorGUIUtility.singleLineHeight;
 			var spacing = 2f;
-			var margin = 10f; // Top and bottom margins
+			var margin = 10f;
 			var height = margin;
 
-			// Base elements: Volume, Loop, Randomize Pitch
 			height += (lineHeight + spacing) * 3;
 
-			// Check if we need to show pitch min/max
-			bool showPitchRange = false;
-			
+			var showPitchRange = false;
+
 			try
 			{
 				if (property.propertyType == SerializedPropertyType.ObjectReference)
@@ -107,17 +102,14 @@ namespace CoreSystems.Audio.Editor
 			}
 			catch
 			{
-				// If any error occurs, default to not showing pitch range
 				showPitchRange = false;
 			}
 
-			// Add height for pitch min/max if needed
 			if (showPitchRange)
 			{
-				height += (lineHeight + spacing) * 2; // Min and Max fields
+				height += (lineHeight + spacing) * 2;
 			}
 
-			// Add height for Ping button
 			height += lineHeight + spacing;
 
 			return height;
@@ -125,7 +117,6 @@ namespace CoreSystems.Audio.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			// Early exit if property is invalid
 			if (property == null || !IsPropertyValid(property))
 			{
 				EditorGUI.PropertyField(position, property, label);
@@ -133,7 +124,7 @@ namespace CoreSystems.Audio.Editor
 			}
 
 			var playButtonWidth = 40f;
-			var profileButtonWidth = 60f;
+			var profileButtonWidth = 90f;
 			var totalButtonsWidth = playButtonWidth + profileButtonWidth;
 
 			var mainLineHeight = EditorGUIUtility.singleLineHeight;
@@ -148,28 +139,26 @@ namespace CoreSystems.Audio.Editor
 			AudioClip clip = null;
 			AudioClipProfile clipProfile = null;
 			var hasProfile = false;
+			var hasAudioManager = false;
 
 			try
 			{
+				var manager = Object.FindObjectOfType<AudioManager>();
+				hasAudioManager = manager != null && manager.AudioLibrary != null;
+
 				if (property.propertyType == SerializedPropertyType.ObjectReference)
 				{
 					clip = property.objectReferenceValue as AudioClip;
-					if (clip != null)
+					if (clip != null && hasAudioManager)
 					{
-						var manager = Object.FindObjectOfType<AudioManager>();
-						if (manager != null && manager.AudioLibrary != null)
-						{
-							clipProfile = manager.AudioLibrary.GetClipProfile(clip.name);
-							hasProfile = clipProfile != null;
-						}
+						clipProfile = manager.AudioLibrary.GetClipProfile(clip.name);
+						hasProfile = clipProfile != null;
 					}
 				}
 				else if (property.propertyType == SerializedPropertyType.String)
 				{
 					var clipName = property.stringValue;
-					var manager = Object.FindObjectOfType<AudioManager>();
-
-					if (manager != null && manager.AudioLibrary != null && !string.IsNullOrEmpty(clipName))
+					if (hasAudioManager && !string.IsNullOrEmpty(clipName))
 					{
 						clip = manager.AudioLibrary.GetClip(clipName);
 						if (clip != null)
@@ -182,10 +171,10 @@ namespace CoreSystems.Audio.Editor
 			}
 			catch
 			{
-				// If any error occurs accessing property, just show basic buttons
 				clip = null;
 				clipProfile = null;
 				hasProfile = false;
+				hasAudioManager = false;
 			}
 
 			var originalColor = GUI.color;
@@ -195,18 +184,19 @@ namespace CoreSystems.Audio.Editor
 			{
 				PlayClipWithProfile(clip, clipProfile);
 			}
+
 			GUI.enabled = true;
 
-			GUI.color = hasProfile ? new Color(0.7f, 1f, 0.7f) : new Color(0.6f, 0.6f, 0.6f);
-			GUI.enabled = hasProfile;
+			var isCurrentPropertyDropdown = showProfileDropdown && currentProperty != null &&
+			                                IsPropertyValid(currentProperty) &&
+			                                currentProperty.propertyPath == property.propertyPath;
 
-			var isCurrentPropertyDropdown = showProfileDropdown && currentProperty != null && 
-			                               IsPropertyValid(currentProperty) &&
-			                               currentProperty.propertyPath == property.propertyPath;
-
-			if (GUI.Button(profileButtonRect, isCurrentPropertyDropdown ? "Profile ▼" : "Profile ▶"))
+			if (hasProfile)
 			{
-				if (hasProfile && clipProfile != null)
+				GUI.color = new Color(0.7f, 1f, 0.7f);
+				GUI.enabled = true;
+
+				if (GUI.Button(profileButtonRect, isCurrentPropertyDropdown ? "Profile ▼" : "Profile ▶"))
 				{
 					if (isCurrentPropertyDropdown)
 					{
@@ -219,6 +209,24 @@ namespace CoreSystems.Audio.Editor
 						currentProperty = property;
 					}
 				}
+			}
+			else if (clip != null && hasAudioManager)
+			{
+				GUI.color = new Color(0.7f, 0.7f, 1f);
+				GUI.enabled = true;
+
+				if (GUI.Button(profileButtonRect, "Create Profile"))
+				{
+					CreateClipProfile(clip);
+				}
+			}
+			else
+			{
+				GUI.color = new Color(0.6f, 0.6f, 0.6f);
+				GUI.enabled = false;
+
+				var buttonText = !hasAudioManager ? "No Manager" : "No Clip";
+				GUI.Button(profileButtonRect, buttonText);
 			}
 
 			GUI.enabled = true;
@@ -252,25 +260,24 @@ namespace CoreSystems.Audio.Editor
 
 			EditorGUI.BeginChangeCheck();
 
-			// Volume slider
 			var volumeRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
 			var volumeProp = serializedProfile.FindProperty("volume");
 			if (volumeProp != null)
 			{
 				EditorGUI.PropertyField(volumeRect, volumeProp, new GUIContent("Volume"));
 			}
+
 			currentY += lineHeight + 2f;
 
-			// Loop toggle
 			var loopRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
 			var loopProp = serializedProfile.FindProperty("loop");
 			if (loopProp != null)
 			{
 				EditorGUI.PropertyField(loopRect, loopProp, new GUIContent("Loop"));
 			}
+
 			currentY += lineHeight + 2f;
 
-			// Randomize pitch toggle
 			var randomizePitchRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
 			var randomizePitchProp = serializedProfile.FindProperty("randomizePitch");
 			if (randomizePitchProp != null)
@@ -278,7 +285,6 @@ namespace CoreSystems.Audio.Editor
 				EditorGUI.PropertyField(randomizePitchRect, randomizePitchProp, new GUIContent("Randomize Pitch"));
 				currentY += lineHeight + 2f;
 
-				// Pitch range (one below the other if randomize is enabled)
 				if (randomizePitchProp.boolValue)
 				{
 					var pitchMinRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
@@ -287,6 +293,7 @@ namespace CoreSystems.Audio.Editor
 					{
 						EditorGUI.PropertyField(pitchMinRect, pitchMinProp, new GUIContent("Pitch Min"));
 					}
+
 					currentY += lineHeight + 2f;
 
 					var pitchMaxRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
@@ -295,11 +302,11 @@ namespace CoreSystems.Audio.Editor
 					{
 						EditorGUI.PropertyField(pitchMaxRect, pitchMaxProp, new GUIContent("Pitch Max"));
 					}
+
 					currentY += lineHeight + 2f;
 				}
 			}
 
-			// Ping Profile button
 			var pingButtonRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
 			if (GUI.Button(pingButtonRect, "Ping Profile in Project"))
 			{
@@ -349,12 +356,64 @@ namespace CoreSystems.Audio.Editor
 			}
 		}
 
+		private void CreateClipProfile(AudioClip clip)
+		{
+			if (clip == null) return;
+
+			var profile = ScriptableObject.CreateInstance<AudioClipProfile>();
+			profile.SetClip(clip);
+
+			var serializedProfile = new SerializedObject(profile);
+			serializedProfile.FindProperty("volume").floatValue = 1f;
+			serializedProfile.FindProperty("loop").boolValue = false;
+			serializedProfile.FindProperty("randomizePitch").boolValue = false;
+			serializedProfile.FindProperty("pitchMin").floatValue = 0.95f;
+			serializedProfile.FindProperty("pitchMax").floatValue = 1.05f;
+			serializedProfile.ApplyModifiedProperties();
+
+			var clipPath = AssetDatabase.GetAssetPath(clip);
+			var clipDirectory = System.IO.Path.GetDirectoryName(clipPath);
+			var profilesDirectory = System.IO.Path.Combine(clipDirectory, "AudioClipProfiles");
+
+			if (!System.IO.Directory.Exists(profilesDirectory))
+			{
+				System.IO.Directory.CreateDirectory(profilesDirectory);
+				AssetDatabase.Refresh();
+			}
+
+			var clipName = clip.name.Replace(" ", "_").Replace("(", "").Replace(")", "");
+			var assetPath = System.IO.Path.Combine(profilesDirectory, $"{clipName}_Profile.asset");
+
+			assetPath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
+
+			AssetDatabase.CreateAsset(profile, assetPath);
+			AssetDatabase.SaveAssets();
+
+			var manager = Object.FindObjectOfType<AudioManager>();
+			if (manager != null && manager.AudioLibrary != null)
+			{
+				var audioLibrary = manager.AudioLibrary;
+				var serializedLibrary = new SerializedObject(audioLibrary);
+				var clipEntriesProperty = serializedLibrary.FindProperty("clipEntries");
+
+				clipEntriesProperty.arraySize++;
+				var newEntryProperty = clipEntriesProperty.GetArrayElementAtIndex(clipEntriesProperty.arraySize - 1);
+				newEntryProperty.objectReferenceValue = profile;
+
+				serializedLibrary.ApplyModifiedProperties();
+				EditorUtility.SetDirty(audioLibrary);
+			}
+
+			EditorGUIUtility.PingObject(profile);
+
+			Debug.Log($"Created AudioClipProfile for '{clip.name}' at {assetPath}");
+		}
+
 		[InitializeOnLoadMethod]
 		private static void RegisterOnDisable()
 		{
 			EditorApplication.quitting += Cleanup;
 			AssemblyReloadEvents.beforeAssemblyReload += Cleanup;
-			// Reset dropdown state when selection changes or inspector updates
 			Selection.selectionChanged += CleanupDropdownState;
 		}
 
@@ -364,13 +423,11 @@ namespace CoreSystems.Audio.Editor
 
 			Object.DestroyImmediate(previewSource.gameObject);
 			previewSource = null;
-			
 			CleanupDropdownState();
 		}
 
 		private static void CleanupDropdownState()
 		{
-			// Reset dropdown state
 			showProfileDropdown = false;
 			currentProperty = null;
 		}

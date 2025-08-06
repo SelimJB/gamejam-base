@@ -317,28 +317,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c507c320295cfb346a9dd7ebff33c375, type: 3}
   - {fileID: 8300000, guid: 0dd891c547515df499a29549d56292b8, type: 3}
   clipEntries:
-  - {fileID: 11400000, guid: a68938a167e9e49ce937a0ae775c4cda, type: 2}
-  - {fileID: 11400000, guid: de743cbd8dae24b4d818fc02f91b11d3, type: 2}
-  - {fileID: 11400000, guid: 80bcab3358243450b85b9025995c2b3f, type: 2}
-  - {fileID: 11400000, guid: c8115ffc5867a4c30a57d8d3e2162062, type: 2}
-  - {fileID: 11400000, guid: f1b4b6d5cd276491d8b636168540bb4c, type: 2}
-  - {fileID: 11400000, guid: 8236fee45aeb644988a9d4fcd87d3979, type: 2}
-  - {fileID: 11400000, guid: 10601fcb9c70246e8a62a48e261a3742, type: 2}
-  - {fileID: 11400000, guid: df4e2eb9128d14e6da69a32db417244c, type: 2}
-  - {fileID: 11400000, guid: 00a339823bc9c4d6ca3038f09bc75467, type: 2}
-  - {fileID: 11400000, guid: d2b96bb6c30f146cd846808913e0f539, type: 2}
-  - {fileID: 11400000, guid: b270828f3cb844c189f8606ba7e0137c, type: 2}
-  - {fileID: 11400000, guid: 0db03b4267a98482f9cd28294d5dc4cc, type: 2}
-  - {fileID: 11400000, guid: a8837b010484e4bd6a7d45d2ee1602b1, type: 2}
-  - {fileID: 11400000, guid: 01a6196490a73499d9ff35b741f1433a, type: 2}
-  - {fileID: 11400000, guid: 13707b8025b9044f3a0b46e253b4b860, type: 2}
-  - {fileID: 11400000, guid: 2829814686fc440c78f612fe460fc27d, type: 2}
-  - {fileID: 11400000, guid: 4237e8491a91a4ccb8ab98d8d76bfa7a, type: 2}
-  - {fileID: 11400000, guid: aee8bb2d96fe84e0d81e1f5bfaf357be, type: 2}
-  - {fileID: 11400000, guid: 8bac0a9421a214084b009ca9849860f2, type: 2}
-  - {fileID: 11400000, guid: f142582b2bc474a5e88209a9e0653cc0, type: 2}
-  - {fileID: 11400000, guid: 0535a474eb35a48a0a5b13b4641afdbc, type: 2}
-  - {fileID: 11400000, guid: 69fd50ecc92a540958803a4f66b4bca0, type: 2}
-  - {fileID: 11400000, guid: 809da881b7c514189a2f1740be5d3f38, type: 2}
-  - {fileID: 11400000, guid: b320c714e3cf747dda064a3e27e3c947, type: 2}
-  - {fileID: 11400000, guid: 70b9a68bc831c40cda63896bb7fece32, type: 2}
+  - {fileID: 11400000, guid: e702dc14952b44745a3a30f19bf0537b, type: 2}

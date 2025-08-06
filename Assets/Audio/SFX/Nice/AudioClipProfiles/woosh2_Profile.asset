@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f97d9e6f4dd4b579ac5d23d5c52875d, type: 3}
-  m_Name: car-crash2_AudioClipProfile
+  m_Name: woosh2_Profile
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 7fa3f151d190347a29b4861948d8b49b, type: 3}
+  clip: {fileID: 8300000, guid: 72e9fe9e388a1450599702842de93f45, type: 3}
   volume: 1
   loop: 0
   randomizePitch: 0
   pitchMin: 0.95
   pitchMax: 1.05
+  delayBetweenPlays: 0
