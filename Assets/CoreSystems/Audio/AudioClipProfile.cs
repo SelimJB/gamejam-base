@@ -6,7 +6,7 @@ namespace CoreSystems.Audio.Editor
 	public class AudioClipProfile : ScriptableObject
 	{
 		[SerializeField] private AudioClip clip;
-		[SerializeField, Range(0f,1f)] private float volume = 1f;
+		[SerializeField, Range(0f, 1f)] private float volume = 1f;
 		[SerializeField] private bool loop;
 		[SerializeField] private bool randomizePitch;
 		[SerializeField] private float pitchMin = 0.95f;
@@ -17,6 +17,7 @@ namespace CoreSystems.Audio.Editor
 		public bool RandomizePitch => randomizePitch;
 		public float PitchMin => pitchMin;
 		public float PitchMax => pitchMax;
+		public float Pitch => RandomizePitch ? Random.Range(pitchMin, pitchMax) : 1f;
 		public string Name => name;
 		public bool Loop => loop;
 

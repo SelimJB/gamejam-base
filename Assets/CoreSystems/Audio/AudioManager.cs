@@ -1,10 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using Random = UnityEngine.Random;
 
 namespace CoreSystems.Audio
 {
+	public struct AudioPlaybackSettings
+	{
+		public float Volume { get; }
+		public float Pitch { get; }
+		public bool Loop { get; }
+
+
+		public AudioPlaybackSettings(float volume, float pitch, bool loop = false)
+		{
+			Volume = volume;
+			Pitch = pitch;
+			Loop = loop;
+		}
+
+		public static AudioPlaybackSettings Default => new AudioPlaybackSettings(1f, 1f, false);
+	}
+
 	public class AudioManager : MonoBehaviour
 	{
 		[SerializeField] private AudioMixer audioMixer;
@@ -99,22 +115,14 @@ namespace CoreSystems.Audio
 
 		public void Play(AudioClip clip, bool useClipProfile = true)
 		{
-			var volume = 1f;
-			var pitch = 1f;
-			var loop = false;
+			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
+			PlayRaw(clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
+		}
 
-			if (useClipProfile)
-			{
-				var clipProfile = audioLibrary.GetClipProfile(clip.name);
-				if (clipProfile != null)
-				{
-					volume = clipProfile.Volume;
-					pitch = clipProfile.RandomizePitch ? Random.Range(clipProfile.PitchMin, clipProfile.PitchMax) : 1f;
-					loop = clipProfile.Loop;
-				}
-			}
-
-			PlayRaw(clip, volume, pitch, loop);
+		public void Play(AudioSource source, AudioClip clip, bool useClipProfile = true)
+		{
+			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
+			PlayRaw(source, clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
 		}
 
 		public void Play(string clipName, bool useClipProfile = true)
@@ -131,15 +139,26 @@ namespace CoreSystems.Audio
 
 		public void PlayRaw(AudioClip clip, float volume = 1f, float pitch = 1f, bool loop = false)
 		{
+			if (!TryGetAvailableAudioSource(out var source))
+			{
+				Debug.LogWarning($"No available audio source to play {clip.name}");
+				return;
+			}
+
+			PlayRaw(source, clip, volume, pitch, loop);
+		}
+
+		public void PlayRaw(AudioSource source, AudioClip clip, float volume = 1f, float pitch = 1f, bool loop = false)
+		{
 			if (clip == null)
 			{
 				Debug.LogWarning("Attempted to play a null AudioClip.");
 				return;
 			}
 
-			if (!TryGetAvailableAudioSource(out var source))
+			if (source == null)
 			{
-				Debug.LogWarning($"No available audio source to play {clip.name}");
+				Debug.LogWarning("Provided AudioSource is null.");
 				return;
 			}
 
@@ -150,6 +169,21 @@ namespace CoreSystems.Audio
 			source.loop = loop;
 
 			source.Play();
+		}
+
+		private AudioPlaybackSettings GetAudioPlaybackSettings(AudioClip clip)
+		{
+			var audioPlaybackSettings = AudioPlaybackSettings.Default;
+
+			var clipProfile = audioLibrary.GetClipProfile(clip.name);
+			if (clipProfile != null)
+			{
+				audioPlaybackSettings = new AudioPlaybackSettings(clipProfile.Volume,
+					clipProfile.Pitch,
+					clipProfile.Loop);
+			}
+
+			return audioPlaybackSettings;
 		}
 
 		private bool TryGetAvailableAudioSource(out AudioSource audioSource)
