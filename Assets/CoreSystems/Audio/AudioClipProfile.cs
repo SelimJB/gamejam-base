@@ -11,6 +11,7 @@ namespace CoreSystems.Audio.Editor
 		[SerializeField] private bool randomizePitch;
 		[SerializeField] private float pitchMin = 0.95f;
 		[SerializeField] private float pitchMax = 1.05f;
+		[SerializeField] private float delayBetweenPlays = 0f;
 
 		public AudioClip Clip => clip;
 		public float Volume => volume;
@@ -20,6 +21,7 @@ namespace CoreSystems.Audio.Editor
 		public float Pitch => RandomizePitch ? Random.Range(pitchMin, pitchMax) : 1f;
 		public string Name => name;
 		public bool Loop => loop;
+		public float DelayBetweenPlays => delayBetweenPlays;
 
 		public void SetClip(AudioClip c) => clip = c;
 	}

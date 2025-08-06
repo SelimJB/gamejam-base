@@ -719,7 +719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae9093de5eb4490fb9104eafb6817fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testClip: {fileID: 8300000, guid: 0a1c735d582074b418316af9cbc8abdd, type: 3}
+  testClip: {fileID: 8300000, guid: 72e9fe9e388a1450599702842de93f45, type: 3}
   stringClip: woosh2
   testNullableFloat:
     hasValue: 1

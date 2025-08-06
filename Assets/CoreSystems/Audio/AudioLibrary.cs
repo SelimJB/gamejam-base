@@ -12,7 +12,7 @@ public class AudioLibrary : ScriptableObject
 	private Dictionary<string, AudioClip> lookup;
 	private Dictionary<string, AudioClipProfile> profileLookup;
 
-	public AudioClip GetClip(string id) => lookup[id];
+	public AudioClip GetClip(string id) => lookup.GetValueOrDefault(id);
 	public AudioClipProfile GetClipProfile(string id) => profileLookup.GetValueOrDefault(id);
 
 	private void OnEnable()

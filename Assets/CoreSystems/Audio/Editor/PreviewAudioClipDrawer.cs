@@ -21,50 +21,106 @@ namespace CoreSystems.Audio.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			var buttonWidth = 50f;
-			Rect fieldRect = new(position.x, position.y, position.width - buttonWidth - 4f, position.height);
-			Rect buttonRect = new(position.x + position.width - buttonWidth, position.y, buttonWidth, position.height);
+			var playButtonWidth = 40f;
+			var profileButtonWidth = 50f;
+			var totalButtonsWidth = playButtonWidth + profileButtonWidth;
+
+			Rect fieldRect = new(position.x, position.y, position.width - totalButtonsWidth, position.height);
+			Rect profileButtonRect = new(position.x + position.width - totalButtonsWidth, position.y, profileButtonWidth, position.height);
+			Rect playButtonRect = new(position.x + position.width - playButtonWidth, position.y, playButtonWidth, position.height);
 
 			EditorGUI.PropertyField(fieldRect, property, label);
 
+			AudioClip clip = null;
+			AudioClipProfile clipProfile = null;
+			var hasProfile = false;
 
-			if (GUI.Button(buttonRect, "▶"))
+			if (property.propertyType == SerializedPropertyType.ObjectReference)
 			{
-				EnsureAudioSource();
-
-				AudioClip clip = null;
-
-				if (property.propertyType == SerializedPropertyType.ObjectReference)
+				clip = property.objectReferenceValue as AudioClip;
+				if (clip != null)
 				{
-					clip = property.objectReferenceValue as AudioClip;
-				}
-				else if (property.propertyType == SerializedPropertyType.String)
-				{
-					var clipName = property.stringValue;
 					var manager = Object.FindObjectOfType<AudioManager>();
-
-					if (manager == null)
+					if (manager != null)
 					{
-						Debug.LogWarning("No AudioManager found in the scene.");
-						return;
-					}
-
-					clip = manager.AudioLibrary.GetClip(clipName);
-
-					if (clip == null)
-					{
-						Debug.LogWarning($"Audio clip '{clipName}' not found in AudioLibrary.");
-						return;
+						clipProfile = manager.AudioLibrary.GetClipProfile(clip.name);
+						hasProfile = clipProfile != null;
 					}
 				}
+			}
+			else if (property.propertyType == SerializedPropertyType.String)
+			{
+				var clipName = property.stringValue;
+				var manager = Object.FindObjectOfType<AudioManager>();
 
-				if (clip == null) return;
+				if (manager != null && !string.IsNullOrEmpty(clipName))
+				{
+					clip = manager.AudioLibrary.GetClip(clipName);
+					if (clip != null)
+					{
+						clipProfile = manager.AudioLibrary.GetClipProfile(clipName);
+						hasProfile = clipProfile != null;
+					}
+				}
+			}
 
-				if (previewSource.isPlaying)
-					previewSource.Stop();
+			var originalColor = GUI.color;
+			GUI.color = hasProfile ? new Color(0.7f, 1f, 0.7f) : new Color(0.6f, 0.6f, 0.6f);
+			GUI.enabled = hasProfile;
 
-				previewSource.clip = clip;
-				previewSource.Play();
+			if (GUI.Button(profileButtonRect, "Profile"))
+			{
+				if (hasProfile && clipProfile != null)
+				{
+					EditorGUIUtility.PingObject(clipProfile);
+				}
+			}
+
+			GUI.enabled = true;
+			GUI.color = originalColor;
+
+			GUI.enabled = clip != null;
+			if (GUI.Button(playButtonRect, "▶"))
+			{
+				PlayClipWithProfile(clip, clipProfile);
+			}
+
+			GUI.enabled = true;
+		}
+
+		private void PlayClipWithProfile(AudioClip clip, AudioClipProfile profile)
+		{
+			if (clip == null) return;
+
+			EnsureAudioSource();
+
+			if (previewSource.isPlaying)
+				previewSource.Stop();
+
+			var volume = 1f;
+			var pitch = 1f;
+			var loop = false;
+
+			if (profile != null)
+			{
+				volume = profile.Volume;
+				pitch = profile.RandomizePitch ? Random.Range(profile.PitchMin, profile.PitchMax) : 1f;
+				loop = profile.Loop;
+			}
+
+			previewSource.clip = clip;
+			previewSource.volume = volume;
+			previewSource.pitch = pitch;
+			previewSource.loop = loop;
+			previewSource.Play();
+
+			if (profile != null)
+			{
+				Debug.Log($"Playing '{clip.name}' with ClipProfile: Volume={volume:F2}, Pitch={pitch:F2}, Loop={loop}");
+			}
+			else
+			{
+				Debug.Log($"Playing '{clip.name}' without ClipProfile (default settings)");
 			}
 		}
 
