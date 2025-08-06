@@ -27,6 +27,11 @@ namespace Staging
 			{
 				audioManager.Play(stringClip);
 			}
+			
+			if (Input.GetKey(KeyCode.P))
+			{
+				audioManager.Play(testClip);
+			}
 		}
 
 		private void OnDrawGizmos()

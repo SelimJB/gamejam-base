@@ -4,23 +4,7 @@ using UnityEngine.Audio;
 
 namespace CoreSystems.Audio
 {
-	public struct AudioPlaybackSettings
-	{
-		public float Volume { get; }
-		public float Pitch { get; }
-		public bool Loop { get; }
-
-
-		public AudioPlaybackSettings(float volume, float pitch, bool loop = false)
-		{
-			Volume = volume;
-			Pitch = pitch;
-			Loop = loop;
-		}
-
-		public static AudioPlaybackSettings Default => new AudioPlaybackSettings(1f, 1f, false);
-	}
-
+	// TODO split SFX and Music logic
 	public class AudioManager : MonoBehaviour
 	{
 		[SerializeField] private AudioMixer audioMixer;
@@ -38,7 +22,12 @@ namespace CoreSystems.Audio
 		[SerializeField] private AudioSource sfxAudioSourcePrefab;
 		[SerializeField] private int sfxMaxSources = 20;
 
+		[Header("Debug")]
+		[SerializeField] private bool verboseDelayedSounds;
+
 		public AudioLibrary AudioLibrary => audioLibrary;
+
+		private readonly Dictionary<string, float> lastPlayTimes = new();
 
 		private static AudioManager instance;
 		public static AudioManager Instance
@@ -113,21 +102,13 @@ namespace CoreSystems.Audio
 			musicSource.Stop();
 		}
 
-		public void Play(AudioClip clip, bool useClipProfile = true)
-		{
-			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
-			PlayRaw(clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
-		}
-
-		public void Play(AudioSource source, AudioClip clip, bool useClipProfile = true)
-		{
-			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
-			PlayRaw(source, clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
-		}
+		public void Play(AudioClip clip, bool useClipProfile = true) => PlayInternal(null, clip, useClipProfile);
+		public void Play(AudioSource source, AudioClip clip, bool useClipProfile = true) => PlayInternal(source, clip, useClipProfile);
 
 		public void Play(string clipName, bool useClipProfile = true)
 		{
 			var clip = audioLibrary.GetClip(clipName);
+
 			if (clip == null)
 			{
 				Debug.LogWarning($"Audio clip '{clipName}' not found in AudioLibrary.");
@@ -135,6 +116,68 @@ namespace CoreSystems.Audio
 			}
 
 			Play(clip, useClipProfile);
+		}
+
+		private void PlayInternal(AudioSource source, AudioClip clip, bool useClipProfile)
+		{
+			if (useClipProfile && !CanPlayClip(clip)) return;
+
+			var settings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
+
+			if (source)
+				PlayRaw(source, clip, settings.Volume, settings.Pitch, settings.Loop);
+			else
+				PlayRaw(clip, settings.Volume, settings.Pitch, settings.Loop);
+
+			if (useClipProfile) UpdateLastPlayTime(clip);
+		}
+
+		/// <summary>
+		///  Plays an audio clip immediately, ignoring any delay between plays.
+		/// </summary>
+		public void PlayForced(AudioClip clip, bool useClipProfile = true)
+		{
+			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
+			PlayRaw(clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
+
+			if (useClipProfile) UpdateLastPlayTime(clip);
+		}
+
+		/// <summary>
+		///  Plays an audio clip using a specific AudioSource, ignoring any delay between plays.
+		/// </summary>
+		public void PlayForced(AudioSource source, AudioClip clip, bool useClipProfile = true)
+		{
+			var audioPlaybackSettings = useClipProfile ? GetAudioPlaybackSettings(clip) : AudioPlaybackSettings.Default;
+			PlayRaw(source, clip, audioPlaybackSettings.Volume, audioPlaybackSettings.Pitch, audioPlaybackSettings.Loop);
+
+			if (useClipProfile) UpdateLastPlayTime(clip);
+		}
+
+		private bool CanPlayClip(AudioClip clip)
+		{
+			if (clip == null) return false;
+
+			var clipProfile = audioLibrary.GetClipProfile(clip.name);
+
+			if (clipProfile == null || clipProfile.DelayBetweenPlays <= 0)
+				return true;
+
+			var clipKey = clip.name;
+
+			if (!lastPlayTimes.ContainsKey(clipKey))
+				return true;
+
+			var timeSinceLastPlay = Time.time - lastPlayTimes[clipKey];
+			return timeSinceLastPlay >= clipProfile.DelayBetweenPlays;
+		}
+
+		private void UpdateLastPlayTime(AudioClip clip)
+		{
+			if (clip != null)
+			{
+				lastPlayTimes[clip.name] = Time.time;
+			}
 		}
 
 		public void PlayRaw(AudioClip clip, float volume = 1f, float pitch = 1f, bool loop = false)
@@ -216,5 +259,21 @@ namespace CoreSystems.Audio
 			source.pitch = 1f;
 			source.loop = false;
 		}
+	}
+
+	public struct AudioPlaybackSettings
+	{
+		public float Volume { get; }
+		public float Pitch { get; }
+		public bool Loop { get; }
+
+		public AudioPlaybackSettings(float volume, float pitch, bool loop = false)
+		{
+			Volume = volume;
+			Pitch = pitch;
+			Loop = loop;
+		}
+
+		public static AudioPlaybackSettings Default => new AudioPlaybackSettings(1f, 1f, false);
 	}
 }

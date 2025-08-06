@@ -57,17 +57,19 @@ namespace CoreSystems.Audio.Editor
 
 		private float CalculateDropdownHeight(SerializedProperty property)
 		{
-			if (property == null || !IsPropertyValid(property)) return 100f;
+			if (property == null || !IsPropertyValid(property)) return 100f; // Fallback height
 
 			var lineHeight = EditorGUIUtility.singleLineHeight;
 			var spacing = 2f;
-			var margin = 10f;
+			var margin = 10f; // Top and bottom margins
 			var height = margin;
 
-			height += (lineHeight + spacing) * 3;
+			// Base elements: Volume, Loop, DelayBetweenPlays, Randomize Pitch
+			height += (lineHeight + spacing) * 4;
 
-			var showPitchRange = false;
-
+			// Check if we need to show pitch min/max
+			bool showPitchRange = false;
+			
 			try
 			{
 				if (property.propertyType == SerializedPropertyType.ObjectReference)
@@ -102,14 +104,17 @@ namespace CoreSystems.Audio.Editor
 			}
 			catch
 			{
+				// If any error occurs, default to not showing pitch range
 				showPitchRange = false;
 			}
 
+			// Add height for pitch min/max if needed
 			if (showPitchRange)
 			{
-				height += (lineHeight + spacing) * 2;
+				height += (lineHeight + spacing) * 2; // Min and Max fields
 			}
 
+			// Add height for Ping button
 			height += lineHeight + spacing;
 
 			return height;
@@ -277,6 +282,14 @@ namespace CoreSystems.Audio.Editor
 			}
 
 			currentY += lineHeight + 2f;
+
+			var delayBetweenPlaysRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
+			var delayBetweenPlaysProp = serializedProfile.FindProperty("delayBetweenPlays");
+			if (delayBetweenPlaysProp != null)
+			{
+				EditorGUI.PropertyField(delayBetweenPlaysRect, delayBetweenPlaysProp, new GUIContent("Delay Between Plays"));
+				currentY += lineHeight + 2f;
+			}
 
 			var randomizePitchRect = new Rect(contentRect.x, currentY, contentRect.width, lineHeight);
 			var randomizePitchProp = serializedProfile.FindProperty("randomizePitch");
