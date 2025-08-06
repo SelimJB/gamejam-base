@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 627310724}
   - component: {fileID: 627310725}
   m_Layer: 0
-  m_Name: Test (1)
+  m_Name: Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,11 +701,11 @@ Transform:
   m_GameObject: {fileID: 627310723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.59, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1356733648}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &627310725
 MonoBehaviour:
@@ -1328,7 +1328,7 @@ GameObject:
   - component: {fileID: 1697600648}
   - component: {fileID: 1697600649}
   m_Layer: 0
-  m_Name: Spawner (1)
+  m_Name: 'Spawner '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1791,9 +1791,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7812608419232914323, guid: 16ce0194b3506426a8b47392ea69ff63, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1697600648}
-    - targetCorrespondingSourceObject: {fileID: 7812608419232914323, guid: 16ce0194b3506426a8b47392ea69ff63, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 627310724}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16ce0194b3506426a8b47392ea69ff63, type: 3}
 --- !u!1660057539 &9223372036854775807
@@ -1808,3 +1805,4 @@ SceneRoots:
   - {fileID: 4728883317364085883}
   - {fileID: 1481932438}
   - {fileID: 650695640}
+  - {fileID: 627310724}
