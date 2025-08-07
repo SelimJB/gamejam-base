@@ -18,4 +18,4 @@ MonoBehaviour:
   randomizePitch: 0
   pitchMin: 0.95
   pitchMax: 1.05
-  delayBetweenPlays: 0
+  delayBetweenPlays: 0.06

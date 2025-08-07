@@ -318,3 +318,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0dd891c547515df499a29549d56292b8, type: 3}
   clipEntries:
   - {fileID: 11400000, guid: e702dc14952b44745a3a30f19bf0537b, type: 2}
+  - {fileID: 11400000, guid: 5d6d6eba321d94f7aa76a4a51651bba8, type: 2}

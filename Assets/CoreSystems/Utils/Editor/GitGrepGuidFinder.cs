@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Utils.Editor
+namespace Utils.EditorTools
 {
 	public static class GitGrepGuidFinder
 	{

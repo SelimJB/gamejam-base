@@ -1,9 +1,8 @@
 using System;
 using UnityEditor;
 using UnityEngine;
-using Utils;
 
-namespace EggSummoner.GameSystems.Characters.Editor
+namespace Utils.EditorTools
 {
 	public static class MigrationUtils
 	{

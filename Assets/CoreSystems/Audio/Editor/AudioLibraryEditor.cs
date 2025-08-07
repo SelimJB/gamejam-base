@@ -1,7 +1,7 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Linq;
-using Utils;
+using Utils.EditorTools;
 
 namespace CoreSystems.Audio.Editor
 {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Utils
+namespace Utils.EditorTools
 {
 	public static class AssetDatabaseUtils
 	{

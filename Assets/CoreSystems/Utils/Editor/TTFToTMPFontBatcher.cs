@@ -2,7 +2,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-namespace CoreSystems.Utils.Editor
+namespace Utils.EditorTools
 {
 	public class TTFToTMPFontBatcher
 	{

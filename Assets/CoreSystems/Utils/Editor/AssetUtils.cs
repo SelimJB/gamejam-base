@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace EggSummoner.Editor.AssetUtils
+namespace Utils.EditorTools
 {
 	public class AssetUtils
 	{
