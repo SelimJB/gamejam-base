@@ -11,6 +11,7 @@ namespace CoreSystems.Achievements.UI
 		[SerializeField] private Transform achievementContainer;
 		[SerializeField] private GameObject achievementUIPrefab;
 		[SerializeField] private TextMeshProUGUI statsText;
+		[SerializeField] private CanvasGroup canvasGroup;
 		
 		private readonly List<AchievementMenuSlot> achievementUIList = new();
 		private AchievementManager achievementManager;
@@ -40,7 +41,19 @@ namespace CoreSystems.Achievements.UI
 				AchievementManager.OnAchievementProgressChanged -= OnAchievementProgressChanged;
 			}
 		}
-
+		
+		public void Display(bool show)
+		{
+			canvasGroup.alpha = show ? 1f : 0f;
+			canvasGroup.interactable = show;
+			canvasGroup.blocksRaycasts = show;
+		}
+		
+		public void ToggleDisplay()
+		{
+			var isVisible = canvasGroup.alpha > 0f;
+			Display(!isVisible);
+		}
 
 		private void BuildAchievementList()
 		{

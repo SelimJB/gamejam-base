@@ -1,5 +1,6 @@
 using System;
 using CoreSystems;
+using CoreSystems.Achievements.UI;
 using CoreSystems.Audio;
 using UnityEngine;
 using Utils;
@@ -11,6 +12,7 @@ namespace Staging
 		[SerializeField, PreviewAudioClip] private AudioClip testClip;
 		[SerializeField, PreviewAudioClip] private string stringClip;
 		[SerializeField] SerializableNullable<float> testNullableFloat;
+		[SerializeField] private AchievementMenu achievementMenu;
 
 		private AudioManager audioManager;
 
@@ -39,14 +41,18 @@ namespace Staging
 
 		private void OnGUI()
 		{
-			// vertical layout
 			GUILayout.BeginVertical("box");
-			// increase font size for buttons
 			GUI.skin.button.fontSize = 30;
 			GUI.skin.label.fontSize = 30;
 
 
 			GUILayout.Label("Dev Playground", GUILayout.Height(200));
+
+			if (GUILayout.Button("Toggle Achievement Menu"))
+			{
+				achievementMenu.ToggleDisplay();
+			}
+
 			if (GUILayout.Button("Test Achievement"))
 			{
 				GameEvents.TriggerItemCollected("coin", 1);

@@ -817,6 +817,7 @@ MonoBehaviour:
   testNullableFloat:
     hasValue: 1
     value: 2
+  achievementMenu: {fileID: 1632705982}
 --- !u!1 &650695636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,6 +1909,7 @@ GameObject:
   - component: {fileID: 1632705980}
   - component: {fileID: 1632705979}
   - component: {fileID: 1632705982}
+  - component: {fileID: 1632705983}
   m_Layer: 5
   m_Name: AchievementPanel
   m_TagString: Untagged
@@ -2004,6 +2006,19 @@ MonoBehaviour:
   achievementContainer: {fileID: 1295343551}
   achievementUIPrefab: {fileID: 2070602814213133300, guid: 2b0da53b1ca774ec990f0c82745993c3, type: 3}
   statsText: {fileID: 1890245617}
+  canvasGroup: {fileID: 1632705983}
+--- !u!225 &1632705983
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632705977}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1697600647
 GameObject:
   m_ObjectHideFlags: 0
