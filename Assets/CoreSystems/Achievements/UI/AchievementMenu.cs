@@ -11,6 +11,7 @@ namespace CoreSystems.Achievements.UI
 		[SerializeField] private Transform achievementContainer;
 		[SerializeField] private GameObject achievementUIPrefab;
 		[SerializeField] private TextMeshProUGUI statsText;
+		[SerializeField] private TextMeshProUGUI percentStatsText;
 		[SerializeField] private CanvasGroup canvasGroup;
 		
 		private readonly List<AchievementMenuSlot> achievementUIList = new();
@@ -101,8 +102,10 @@ namespace CoreSystems.Achievements.UI
 				return;
 
 			var stats = achievementManager.GetStats();
-			statsText.text = $"Achievements: {stats.UnlockedAchievements}/{stats.TotalAchievements} " +
-			                 $"({stats.CompletionPercentage:P0})";
+			statsText.text = $"Achievements: {stats.UnlockedAchievements}/{stats.TotalAchievements}";
+			
+			if (percentStatsText != null)
+				percentStatsText.text = $"{stats.CompletionPercentage:P0}";
 		}
 		
 		private void UpdateAchievementUI(Achievement achievement)
