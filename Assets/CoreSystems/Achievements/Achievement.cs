@@ -8,11 +8,11 @@ namespace CoreSystems.Achievements
 	public class Achievement : ScriptableObject
 	{
 		[Header("Basic Info")]
-		[SerializeField] private string id;
 		[SerializeField] private string title;
 		[SerializeField, TextArea(2, 4)] private string description;
 		[SerializeField] private Sprite icon;
 		[SerializeField] private Color color;
+		[SerializeField] private Color backgroundColor;
 		[SerializeField] private bool isHidden;
 
 		[Header("Conditions")]
@@ -21,7 +21,7 @@ namespace CoreSystems.Achievements
 		[Header("Audio")]
 		[SerializeField, PreviewAudioClip] private AudioClip unlockSound;
 
-		public string Id => string.IsNullOrEmpty(id) ? name : id;
+		public string Id { get; private set; }
 		public string Title => title;
 		public string Description => description;
 		public Sprite Icon => icon;
@@ -29,6 +29,9 @@ namespace CoreSystems.Achievements
 		public AchievementCondition[] Conditions => conditions;
 		public AudioClip UnlockSound => unlockSound;
 		public Color Color => color;
+		public Color BackgroundColor => backgroundColor;
+		public AchievementState State =>
+			IsCompleted() ? AchievementState.Unlocked : isHidden ? AchievementState.Hidden : AchievementState.Locked;
 
 		public event Action<Achievement> OnUnlocked;
 
@@ -64,6 +67,8 @@ namespace CoreSystems.Achievements
 
 		public void Initialize(bool persistentProgress)
 		{
+			Id = $"{name}_{GetInstanceID()}";
+
 			if (conditions == null) return;
 
 			foreach (var condition in conditions)
@@ -88,14 +93,6 @@ namespace CoreSystems.Achievements
 			OnUnlocked?.Invoke(this);
 		}
 
-		private void OnValidate()
-		{
-			if (string.IsNullOrEmpty(id))
-			{
-				id = name.Replace(" ", "_").ToLower();
-			}
-		}
-
 		public void Cleanup()
 		{
 			if (conditions != null)
@@ -112,5 +109,12 @@ namespace CoreSystems.Achievements
 
 			OnUnlocked = null;
 		}
+	}
+
+	public enum AchievementState
+	{
+		Hidden,
+		Unlocked,
+		Locked
 	}
 }

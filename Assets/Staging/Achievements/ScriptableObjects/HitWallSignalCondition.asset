@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dae0bdcd7207423fb44e50449925fc6, type: 3}
-  m_Name: CollectionCondition
+  m_Script: {fileID: 11500000, guid: 6ffbc1be026545e09e0ecada6e8b339a, type: 3}
+  m_Name: HitWallSignalCondition
   m_EditorClassIdentifier: 
-  conditionName: Collection
-  description: Collect 5 coin(s)
-  itemType: coin
-  targetQuantity: 5
+  conditionName: Hit Wall Signal
+  description: 
+  expectedSignal: HitWall

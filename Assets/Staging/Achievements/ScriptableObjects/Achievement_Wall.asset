@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1d8a5e72110142b0a7faa9156dd5f52, type: 3}
-  m_Name: Achievement_Money
+  m_Name: Achievement_Wall
   m_EditorClassIdentifier: 
-  id: newachievement
-  title: $$$$ Monnnneeeyyyy $$$$
-  description: Collect 5 coins
-  icon: {fileID: 21300000, guid: 1c3b5cede63e349d9abb9fb8375eb216, type: 3}
-  color: {r: 0.7264151, g: 0.447264, b: 0.08566215, a: 1}
-  backgroundColor: {r: 1, g: 0.8784314, b: 0.3254902, a: 1}
+  title: OUCH!
+  description: Hit the wall
+  icon: {fileID: 21300000, guid: ccc9d6ac40b1c4ccc988551e50912272, type: 3}
+  color: {r: 1, g: 0.32549024, b: 0.39706865, a: 1}
+  backgroundColor: {r: 0.3915094, g: 0.9250372, b: 1, a: 1}
   isHidden: 0
   conditions:
-  - {fileID: 11400000, guid: df69070b71c4f440bbbc384f8f4b946a, type: 2}
+  - {fileID: 11400000, guid: a74e7c4bcd022458481e31e4528b8f2b, type: 2}
   unlockSound: {fileID: 0}

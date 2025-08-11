@@ -49,8 +49,6 @@ namespace CoreSystems.Achievements
 
 			SaveData();
 
-			Debug.Log($"Collected {quantity} {itemType}(s). Current total: {currentQuantity}");
-
 			EvaluateCondition();
 		}
 

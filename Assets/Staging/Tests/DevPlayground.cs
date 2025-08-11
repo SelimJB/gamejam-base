@@ -22,6 +22,8 @@ namespace Staging
 
 		private void Update()
 		{
+			GameEvents.TriggerTimeElapsed(Time.deltaTime);
+
 			if (Input.GetKeyDown(KeyCode.I))
 			{
 				audioManager.Play(testClip);
@@ -41,30 +43,20 @@ namespace Staging
 		private void OnGUI()
 		{
 			GUILayout.BeginVertical("box");
-			GUI.skin.button.fontSize = 30;
-			GUI.skin.label.fontSize = 30;
+			GUI.skin.button.fontSize = 40;
+			GUI.skin.label.fontSize = 40;
 
 
-			GUILayout.Label("Dev Playground", GUILayout.Height(200));
+			GUILayout.Label("Dev Playground");
 
 			if (GUILayout.Button("Toggle Achievement Menu"))
 			{
-				achievementMenu.ToggleDisplay();
+				achievementMenu.ToggleVisibility();
 			}
 
-			if (GUILayout.Button("Test Achievement"))
-			{
-				GameEvents.TriggerItemCollected("coin", 1);
-			}
-
-			if (GUILayout.Button("Test Achievement 2"))
+			if (GUILayout.Button("Unlock Button Test Achievement"))
 			{
 				GameEvents.TriggerSignal("TEST");
-			}
-
-			if (GUILayout.Button("Test Achievement 3"))
-			{
-				GameEvents.TriggerSignal("SPECIAL");
 			}
 
 			GUILayout.EndVertical();

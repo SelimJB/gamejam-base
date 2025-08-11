@@ -16,8 +16,9 @@ MonoBehaviour:
   title: Button clicker
   description: Click the button
   icon: {fileID: 21300000, guid: 391ff68474daa47bfb627088ffae138b, type: 3}
-  color: {r: 1, g: 0.41037738, b: 0.41037738, a: 0}
-  isHidden: 0
+  color: {r: 1, g: 0.3160377, b: 0.7407961, a: 1}
+  backgroundColor: {r: 0.4292453, g: 0.9448561, b: 1, a: 1}
+  isHidden: 1
   conditions:
   - {fileID: 11400000, guid: 742de14d3e69c443f877a87e269e7ddf, type: 2}
   unlockSound: {fileID: 8, guid: 46d52727be22a4c8793a5300dfc8591e, type: 3}

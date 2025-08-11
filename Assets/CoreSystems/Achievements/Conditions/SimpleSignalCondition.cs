@@ -18,7 +18,6 @@ namespace CoreSystems.Achievements
 
 		private void OnOnSignalReceivedSignalReceived(string receivedSignal)
 		{
-			Debug.Log($"Signal received: {receivedSignal}, waiting for: {expectedSignal}");
 			if (receivedSignal == expectedSignal)
 				isConditionMet = true;
 

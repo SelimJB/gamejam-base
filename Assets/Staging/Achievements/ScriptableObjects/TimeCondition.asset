@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dae0bdcd7207423fb44e50449925fc6, type: 3}
-  m_Name: CollectionCondition
+  m_Script: {fileID: 11500000, guid: c2e9c3fcb37064a599ae607a13851841, type: 3}
+  m_Name: TimeCondition
   m_EditorClassIdentifier: 
-  conditionName: Collection
-  description: Collect 5 coin(s)
-  itemType: coin
-  targetQuantity: 5
+  conditionName: Wait 10 seconds
+  description: Survive for 10s
+  targetTime: 10
+  timeType: 1
+  trackBestTime: 1
