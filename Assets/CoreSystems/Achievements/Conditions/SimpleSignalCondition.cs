@@ -19,8 +19,12 @@ namespace CoreSystems.Achievements
 		private void OnOnSignalReceivedSignalReceived(string receivedSignal)
 		{
 			if (receivedSignal == expectedSignal)
+			{
 				isConditionMet = true;
+				SaveData();
+			}
 
+			
 			EvaluateCondition();
 		}
 
