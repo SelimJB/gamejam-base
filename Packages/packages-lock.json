@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.coffee.softmask-for-ugui": {
+      "version": "3.3.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://package.openupm.com"
+    },
     "com.nobi.roundedcorners": {
       "version": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
       "depth": 0,
