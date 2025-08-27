@@ -140,7 +140,7 @@ namespace CoreSystems.Achievements
 
 			if (playUnlockSounds)
 			{
-				var unlockSound = achievement.UnlockSound ?  achievement.UnlockSound : achievementCollection.DefaultUnlockSound;
+				var unlockSound = achievement.UnlockSound ? achievement.UnlockSound : achievementCollection.DefaultUnlockSound;
 				AudioManager.Instance?.Play(unlockSound);
 			}
 
@@ -196,7 +196,10 @@ namespace CoreSystems.Achievements
 		private void LoadUnlockedAchievements()
 		{
 			if (persistenceMode == PersistenceMode.Disabled)
+			{
+				ResetAllAchievements();
 				return;
+			}
 
 			foreach (var achievement in AllAchievements)
 			{
@@ -205,6 +208,9 @@ namespace CoreSystems.Achievements
 					var key = $"Achievement_{achievement.Id}_Unlocked";
 					var isUnlocked = PlayerPrefs.GetInt(key, 0) == 1;
 					unlockedAchievements[achievement.Id] = isUnlocked;
+
+					if (isUnlocked)
+						achievement.MarkAsUnlockedFromPersistence();
 				}
 			}
 		}
@@ -233,6 +239,8 @@ namespace CoreSystems.Achievements
 				{
 					var key = $"Achievement_{achievement.Id}_Unlocked";
 					PlayerPrefs.DeleteKey(key);
+
+					achievement.ResetPersistenceFlag();
 				}
 			}
 

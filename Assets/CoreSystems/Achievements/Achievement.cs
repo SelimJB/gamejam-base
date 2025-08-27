@@ -30,8 +30,31 @@ namespace CoreSystems.Achievements
 		public AudioClip UnlockSound => unlockSound;
 		public Color Color => color;
 		public Color BackgroundColor => backgroundColor;
-		public AchievementState State =>
-			IsCompleted() ? AchievementState.Unlocked : isHidden ? AchievementState.Hidden : AchievementState.Locked;
+		public AchievementState State
+		{
+			get
+			{
+				if (isUnlockedFromPersistence || IsCompleted())
+					return AchievementState.Unlocked;
+
+				if (isHidden)
+					return AchievementState.Hidden;
+
+				return AchievementState.Locked;
+			}
+		}
+
+		private bool isUnlockedFromPersistence;
+
+		public void MarkAsUnlockedFromPersistence()
+		{
+			isUnlockedFromPersistence = true;
+		}
+
+		public void ResetPersistenceFlag()
+		{
+			isUnlockedFromPersistence = false;
+		}
 
 		public event Action<Achievement> OnUnlocked;
 
