@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace CoreSystems.Achievements
 {
-	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Conditions/Collection Condition", fileName = "CollectionCondition")]
-	public class CollectionCondition : AchievementCondition
+	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Cumulative", fileName = "Condition_MetricCumulative", order = 10)]
+	public class MetricCumulativeCondition : AchievementCondition
 	{
 		[Header("Collection Settings")]
 		[SerializeField] private string itemType = "coin"; // Replace with a more specific type or enum when using in a real project
@@ -31,17 +31,17 @@ namespace CoreSystems.Achievements
 		{
 			base.Initialize(persistProgress);
 
-			GameEvents.OnItemCollected += OnItemCollected;
+			GameEvents.OnMetricIncreased += OnMetricIncreased; // Changer le nom ?
 		}
 
 		public override void Cleanup()
 		{
 			base.Cleanup();
 
-			GameEvents.OnItemCollected -= OnItemCollected;
+			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnItemCollected(string collectedItemType, int quantity)
+		private void OnMetricIncreased(string collectedItemType, int quantity)
 		{
 			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
 

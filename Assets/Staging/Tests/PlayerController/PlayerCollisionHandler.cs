@@ -25,7 +25,7 @@ namespace Staging
 			// which would store the appropriate particle effect & SFX for that surface type.
 			if (other.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
 			{
-				GameEvents.TriggerSignal("HitWall");
+				GameEvents.TriggerMilestone("HitWall");
 				vfxManager.Spawn(impactVFXPrefab, other.contacts[0].point);
 				audioManager.Play(impactSFX);
 			}
@@ -35,7 +35,7 @@ namespace Staging
 		{
 			if (other.gameObject.TryGetComponent<Coin>(out var coin))
 			{
-				GameEvents.TriggerItemCollected("coin");
+				GameEvents.ReportMetricIncrease("coin");
 			}
 		}
 	}

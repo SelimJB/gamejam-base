@@ -4,19 +4,16 @@ namespace CoreSystems
 {
 	public static class GameEvents
 	{
-		public static event Action<int> OnScoreChanged;
 		public static event Action<int> OnScoreIncreased;
 		public static event Action<float> OnTimeElapsed;
 		public static event Action<float> OnSurvivalTime;
-		public static event Action<string, int> OnItemCollected;
+		public static event Action<string, int> OnMetricIncreased;
 		public static event Action<string> OnSpecialItemCollected;
 		public static event Action OnPlayerDeath;
-		public static event Action OnLevelCompleted;
 		public static event Action<int> OnLevelUp;
 		public static event Action<string> OnUpgradeUnlocked;
-		public static event Action<string> OnSpecialAction;
 		public static event Action<string, float> OnStatChanged;
-		public static event Action<string> OnSignalReceived;
+		public static event Action<string> OnMilestoneReached;
 
 		// Don't hesitate to create nested namespaces for better organization.
 		// public static class GAMENAMESPACE
@@ -26,24 +23,20 @@ namespace CoreSystems
 
 		public static void ClearAllEvents()
 		{
-			OnScoreChanged = null;
 			OnScoreIncreased = null;
 			OnTimeElapsed = null;
 			OnSurvivalTime = null;
-			OnItemCollected = null;
+			OnMetricIncreased = null;
 			OnSpecialItemCollected = null;
 			OnPlayerDeath = null;
-			OnLevelCompleted = null;
 			OnLevelUp = null;
 			OnUpgradeUnlocked = null;
-			OnSpecialAction = null;
 			OnStatChanged = null;
-			OnSignalReceived = null;
+			OnMilestoneReached = null;
 		}
 
 		public static void TriggerScoreChanged(int newScore)
 		{
-			OnScoreChanged?.Invoke(newScore);
 		}
 
 		public static void TriggerScoreIncreased(int increment)
@@ -56,14 +49,15 @@ namespace CoreSystems
 			OnTimeElapsed?.Invoke(time);
 		}
 
+// TODO CLEAN ET CHANGER LE RESTE
 		public static void TriggerSurvivalTime(float survivalTime)
 		{
 			OnSurvivalTime?.Invoke(survivalTime);
 		}
 
-		public static void TriggerItemCollected(string itemType, int quantity = 1)
+		public static void ReportMetricIncrease(string itemType, int quantity = 1)
 		{
-			OnItemCollected?.Invoke(itemType, quantity);
+			OnMetricIncreased?.Invoke(itemType, quantity);
 		}
 
 		public static void TriggerSpecialItemCollected(string itemId)
@@ -86,19 +80,14 @@ namespace CoreSystems
 			OnUpgradeUnlocked?.Invoke(upgradeId);
 		}
 
-		public static void TriggerSpecialAction(string actionId)
-		{
-			OnSpecialAction?.Invoke(actionId);
-		}
-
 		public static void TriggerStatChanged(string statName, float newValue)
 		{
 			OnStatChanged?.Invoke(statName, newValue);
 		}
 
-		public static void TriggerSignal(string signal)
+		public static void TriggerMilestone(string signal)
 		{
-			OnSignalReceived?.Invoke(signal);
+			OnMilestoneReached?.Invoke(signal);
 		}
 	}
 }

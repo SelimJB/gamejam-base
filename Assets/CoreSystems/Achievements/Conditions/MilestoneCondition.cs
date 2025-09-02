@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace CoreSystems.Achievements
 {
-	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Conditions/Simple Signal Condition", fileName = "SimpleSignalCondition")]
-	public class SimpleSignalCondition : AchievementCondition
+	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Milestone", fileName = "Condition_Milestone", order = 12)]
+	public class MilestoneCondition : AchievementCondition
 	{
 		[SerializeField] private string expectedSignal;
 
@@ -13,10 +13,10 @@ namespace CoreSystems.Achievements
 		{
 			base.Initialize(persistProgress);
 
-			GameEvents.OnSignalReceived += OnOnSignalReceivedSignalReceived;
+			GameEvents.OnMilestoneReached += OnOnMilestoneReachedMilestoneReached;
 		}
 
-		private void OnOnSignalReceivedSignalReceived(string receivedSignal)
+		private void OnOnMilestoneReachedMilestoneReached(string receivedSignal)
 		{
 			if (receivedSignal == expectedSignal)
 			{
@@ -24,7 +24,6 @@ namespace CoreSystems.Achievements
 				SaveData();
 			}
 
-			
 			EvaluateCondition();
 		}
 

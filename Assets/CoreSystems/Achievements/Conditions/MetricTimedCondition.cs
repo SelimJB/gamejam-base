@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace CoreSystems.Achievements
 {
-	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Conditions/Value Timed Condition", fileName = "ValueTimedCondition")]
-	public class ValueTimedCondition : AchievementCondition
+	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Timed", fileName = "Condition_MetricTimed", order = 11)]
+	public class MetricTimedCondition : AchievementCondition
 	{
 		[Header("Timed Cumulative Settings")]
 		[SerializeField] private string itemType = "coin";
@@ -36,16 +36,16 @@ namespace CoreSystems.Achievements
 		public override void Initialize(bool persistProgress)
 		{
 			base.Initialize(false);
-			GameEvents.OnItemCollected += OnItemCollected;
+			GameEvents.OnMetricIncreased += OnMetricIncreased;
 		}
 
 		public override void Cleanup()
 		{
 			base.Cleanup();
-			GameEvents.OnItemCollected -= OnItemCollected;
+			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnItemCollected(string collectedItemType, int quantity)
+		private void OnMetricIncreased(string collectedItemType, int quantity)
 		{
 			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
 

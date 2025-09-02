@@ -56,7 +56,7 @@ namespace Staging
 
 			if (GUILayout.Button("Unlock Button Test Achievement"))
 			{
-				GameEvents.TriggerSignal("TEST");
+				GameEvents.TriggerMilestone("TEST");
 			}
 
 			GUILayout.EndVertical();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CoreSystems.Achievements
 {
-	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Conditions/Time Condition", fileName = "TimeCondition")]
+	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Time", fileName = "Condition_Time", order = 13)]
 	public class TimeCondition : AchievementCondition
 	{
 		[Header("Time Settings")]

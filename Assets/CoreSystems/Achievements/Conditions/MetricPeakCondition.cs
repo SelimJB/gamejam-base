@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace CoreSystems.Achievements
 {
-	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Conditions/Value Peak Condition", fileName = "ValuePeakCondition")]
-	public class ValuePeakCondition : AchievementCondition
+	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Peak", fileName = "Condition_MetricPeak", order = 11)]
+	public class MetricPeakCondition : AchievementCondition
 	{
 		[Header("Peak Collection Settings")]
 		[SerializeField] private string itemType = "coin";
@@ -31,17 +31,17 @@ namespace CoreSystems.Achievements
 		{
 			base.Initialize(persistProgress);
 
-			GameEvents.OnItemCollected += OnItemCollected;
+			GameEvents.OnMetricIncreased += OnMetricIncreased;
 		}
 
 		public override void Cleanup()
 		{
 			base.Cleanup();
 
-			GameEvents.OnItemCollected -= OnItemCollected;
+			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnItemCollected(string collectedItemType, int quantity)
+		private void OnMetricIncreased(string collectedItemType, int quantity)
 		{
 			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
 
