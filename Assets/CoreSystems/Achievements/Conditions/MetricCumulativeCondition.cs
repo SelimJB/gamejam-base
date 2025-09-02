@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace CoreSystems.Achievements
@@ -7,7 +6,7 @@ namespace CoreSystems.Achievements
 	public class MetricCumulativeCondition : AchievementCondition
 	{
 		[Header("Collection Settings")]
-		[SerializeField] private string itemType = "coin"; // Replace with a more specific type or enum when using in a real project
+		[SerializeField] private MetricType metric;
 		[SerializeField] private int targetQuantity = 100;
 
 		private int currentQuantity;
@@ -24,14 +23,14 @@ namespace CoreSystems.Achievements
 
 		public override string GetProgressDescription()
 		{
-			return $"{itemType}: {currentQuantity} / {targetQuantity}";
+			return $"{metric}: {currentQuantity} / {targetQuantity}";
 		}
 
 		public override void Initialize(bool persistProgress)
 		{
 			base.Initialize(persistProgress);
 
-			GameEvents.OnMetricIncreased += OnMetricIncreased; // Changer le nom ?
+			GameEvents.OnMetricIncreased += OnMetricIncreased;
 		}
 
 		public override void Cleanup()
@@ -41,9 +40,9 @@ namespace CoreSystems.Achievements
 			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnMetricIncreased(string collectedItemType, int quantity)
+		private void OnMetricIncreased(MetricType _metric, int quantity)
 		{
-			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
+			if (_metric != metric) return;
 
 			currentQuantity += quantity;
 
@@ -52,7 +51,7 @@ namespace CoreSystems.Achievements
 			EvaluateCondition();
 		}
 
-		protected override string Key => $"CollectionCondition_{itemType}_{GetInstanceID()}";
+		protected override string Key => $"CollectionCondition_{metric}_{GetInstanceID()}";
 
 		protected override void LoadConditionData()
 		{
@@ -74,7 +73,7 @@ namespace CoreSystems.Achievements
 		{
 			if (string.IsNullOrEmpty(description))
 			{
-				description = $"Collect {targetQuantity} {itemType}(s)";
+				description = $"Collect {targetQuantity} {metric}(s)";
 			}
 		}
 	}

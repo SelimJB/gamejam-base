@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace CoreSystems.Achievements
 	public class MetricTimedCondition : AchievementCondition
 	{
 		[Header("Timed Cumulative Settings")]
-		[SerializeField] private string itemType = "coin";
+		[SerializeField] private MetricType metric;
 		[SerializeField] private int targetQuantity = 50;
 		[SerializeField] private float timeLimit = 30f;
 
@@ -30,7 +29,7 @@ namespace CoreSystems.Achievements
 		public override string GetProgressDescription()
 		{
 			CleanupOldEvents();
-			return $"{itemType}: {currentCumulativeQuantity}/{targetQuantity} (in {timeLimit}s)";
+			return $"{metric}: {currentCumulativeQuantity}/{targetQuantity} (in {timeLimit}s)";
 		}
 
 		public override void Initialize(bool persistProgress)
@@ -45,11 +44,11 @@ namespace CoreSystems.Achievements
 			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnMetricIncreased(string collectedItemType, int quantity)
+		private void OnMetricIncreased(MetricType _metric, int quantity)
 		{
-			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
+			if (metric != _metric) return;
 
-			float currentTime = Time.time;
+			var currentTime = Time.time;
 			recentEvents.Add((currentTime, quantity));
 
 			CleanupOldEvents();
@@ -75,7 +74,7 @@ namespace CoreSystems.Achievements
 			}
 		}
 
-		protected override string Key => $"TimedCumulativeCondition_{itemType}_{GetInstanceID()}";
+		protected override string Key => $"TimedCumulativeCondition_{metric}_{GetInstanceID()}";
 
 		protected override void LoadConditionData() { }
 
@@ -91,7 +90,7 @@ namespace CoreSystems.Achievements
 		{
 			if (string.IsNullOrEmpty(description))
 			{
-				description = $"Collect {targetQuantity} {itemType}(s) within {timeLimit} seconds";
+				description = $"Collect {targetQuantity} {metric}(s) within {timeLimit} seconds";
 			}
 		}
 	}

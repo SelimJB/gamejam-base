@@ -5,7 +5,7 @@ namespace CoreSystems.Achievements
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Milestone", fileName = "Condition_Milestone", order = 12)]
 	public class MilestoneCondition : AchievementCondition
 	{
-		[SerializeField] private string expectedSignal;
+		[SerializeField] private MilestoneType expectedMilestoneType;
 
 		private bool isConditionMet;
 
@@ -13,12 +13,12 @@ namespace CoreSystems.Achievements
 		{
 			base.Initialize(persistProgress);
 
-			GameEvents.OnMilestoneReached += OnOnMilestoneReachedMilestoneReached;
+			GameEvents.OnMilestoneReached += OnMilestoneReached;
 		}
 
-		private void OnOnMilestoneReachedMilestoneReached(string receivedSignal)
+		private void OnMilestoneReached(MilestoneType receivedMilestoneType)
 		{
-			if (receivedSignal == expectedSignal)
+			if (receivedMilestoneType == expectedMilestoneType)
 			{
 				isConditionMet = true;
 				SaveData();
@@ -37,7 +37,7 @@ namespace CoreSystems.Achievements
 			return isConditionMet ? 1f : 0f;
 		}
 
-		protected override string Key => $"SignalCondition_{expectedSignal}_{GetInstanceID()}";
+		protected override string Key => $"SignalCondition_{expectedMilestoneType}_{GetInstanceID()}";
 
 		protected override void SaveConditionData()
 		{

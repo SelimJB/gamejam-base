@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace CoreSystems.Achievements
@@ -7,7 +6,7 @@ namespace CoreSystems.Achievements
 	public class MetricPeakCondition : AchievementCondition
 	{
 		[Header("Peak Collection Settings")]
-		[SerializeField] private string itemType = "coin";
+		[SerializeField] private MetricType metric;
 		[SerializeField] private float minPeakQuantity = 100;
 
 		private float currentPeakQuantity;
@@ -24,7 +23,7 @@ namespace CoreSystems.Achievements
 
 		public override string GetProgressDescription()
 		{
-			return $"{itemType} peak: {currentPeakQuantity} / {minPeakQuantity}";
+			return $"{metric} peak: {currentPeakQuantity} / {minPeakQuantity}";
 		}
 
 		public override void Initialize(bool persistProgress)
@@ -41,9 +40,9 @@ namespace CoreSystems.Achievements
 			GameEvents.OnMetricIncreased -= OnMetricIncreased;
 		}
 
-		private void OnMetricIncreased(string collectedItemType, int quantity)
+		private void OnMetricIncreased(MetricType _metric, int quantity)
 		{
-			if (!collectedItemType.Equals(itemType, StringComparison.OrdinalIgnoreCase)) return;
+			if (_metric != metric) return;
 
 			// Only update if this single collection event is higher than our current peak
 			if (quantity > currentPeakQuantity)
@@ -54,7 +53,7 @@ namespace CoreSystems.Achievements
 			}
 		}
 
-		protected override string Key => $"PeakCollectionCondition_{itemType}_{GetInstanceID()}";
+		protected override string Key => $"PeakCollectionCondition_{metric}_{GetInstanceID()}";
 
 		protected override void LoadConditionData()
 		{
@@ -76,7 +75,7 @@ namespace CoreSystems.Achievements
 		{
 			if (string.IsNullOrEmpty(description))
 			{
-				description = $"Collect {minPeakQuantity} {itemType}(s) in a single collection";
+				description = $"Collect {minPeakQuantity} {metric}(s) in a single collection";
 			}
 		}
 	}

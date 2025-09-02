@@ -1,4 +1,5 @@
 using CoreSystems;
+using CoreSystems.Achievements;
 using CoreSystems.Achievements.UI;
 using CoreSystems.Audio;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Staging
 
 		private void Update()
 		{
-			GameEvents.TriggerTimeElapsed(Time.deltaTime);
+			GameEvents.ReportTimeElapsed(Time.deltaTime);
 
 			if (Input.GetKeyDown(KeyCode.I))
 			{
@@ -56,7 +57,7 @@ namespace Staging
 
 			if (GUILayout.Button("Unlock Button Test Achievement"))
 			{
-				GameEvents.TriggerMilestone("TEST");
+				GameEvents.ReportMilestone(MilestoneType.Test);
 			}
 
 			GUILayout.EndVertical();
