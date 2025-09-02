@@ -8,7 +8,6 @@ namespace CoreSystems.Achievements
 		[Header("Time Settings")]
 		[SerializeField] private float targetTime = 60f;
 		[SerializeField] private TimeType timeType = TimeType.Survival;
-		[SerializeField] private bool trackBestTime = true;
 
 		public enum TimeType
 		{
@@ -17,32 +16,20 @@ namespace CoreSystems.Achievements
 		}
 
 		private float currentTime;
-		private float bestTime;
-		private float cumulativeTime;
 
 		public override bool IsConditionMet()
 		{
-			switch (timeType)
-			{
-				case TimeType.Survival:
-					return (trackBestTime ? bestTime : currentTime) >= targetTime;
-				case TimeType.Cumulative:
-					return cumulativeTime >= targetTime;
-				default:
-					return false;
-			}
+			return currentTime >= targetTime;
 		}
 
 		public override float GetProgress()
 		{
-			var timeToCheck = GetRelevantTime();
-			return Mathf.Clamp01(timeToCheck / targetTime);
+			return Mathf.Clamp01(currentTime / targetTime);
 		}
 
 		public override string GetProgressDescription()
 		{
-			var timeToCheck = GetRelevantTime();
-			var timeString = FormatTime(timeToCheck);
+			var timeString = FormatTime(currentTime);
 			var targetString = FormatTime(targetTime);
 
 			var typeLabel = timeType == TimeType.Survival ? "Survival" : "Total";
@@ -51,9 +38,10 @@ namespace CoreSystems.Achievements
 
 		public override void Initialize(bool persistProgress)
 		{
-			base.Initialize(persistProgress);
+			var actualPersistProgress = timeType == TimeType.Cumulative && persistProgress;
 
-			GameEvents.OnSurvivalTime += OnSurvivalTime;
+			base.Initialize(actualPersistProgress);
+
 			GameEvents.OnTimeElapsed += OnTimeElapsed;
 			GameEvents.OnPlayerDeath += OnPlayerDeath;
 		}
@@ -62,51 +50,26 @@ namespace CoreSystems.Achievements
 		{
 			base.Cleanup();
 
-			GameEvents.OnSurvivalTime -= OnSurvivalTime;
 			GameEvents.OnTimeElapsed -= OnTimeElapsed;
 			GameEvents.OnPlayerDeath -= OnPlayerDeath;
 		}
 
-		private void OnSurvivalTime(float survivalTime)
-		{
-			if (timeType == TimeType.Survival)
-			{
-				currentTime = survivalTime;
-			}
-		}
-
 		private void OnTimeElapsed(float elapsedTime)
 		{
+			currentTime += elapsedTime;
+
 			if (timeType == TimeType.Cumulative)
-			{
-				cumulativeTime += elapsedTime;
 				SaveData();
-			}
 
 			EvaluateCondition();
 		}
+
 
 		private void OnPlayerDeath()
 		{
-			if (timeType == TimeType.Survival && currentTime > bestTime)
+			if (timeType == TimeType.Survival)
 			{
-				bestTime = currentTime;
-				SaveData();
-			}
-
-			EvaluateCondition();
-		}
-
-		private float GetRelevantTime()
-		{
-			switch (timeType)
-			{
-				case TimeType.Survival:
-					return trackBestTime ? bestTime : currentTime;
-				case TimeType.Cumulative:
-					return cumulativeTime;
-				default:
-					return 0f;
+				currentTime = 0f;
 			}
 		}
 
@@ -121,36 +84,33 @@ namespace CoreSystems.Achievements
 			return $"{seconds}s";
 		}
 
-		private string KeyBest => $"TimeCondition_{GetInstanceID()}";
-		private string KeyCumulative => $"TimeCondition_{GetInstanceID()}_Cumulative";
+		public override string Key =>
+			timeType == TimeType.Survival ? $"TimeCondition_{GetInstanceID()}" : $"TimeCondition_{GetInstanceID()}_Cumulative";
+
+		public override string Description2 => timeType == TimeType.Survival
+			? $"Survive for {FormatTime(targetTime)}"
+			: $"Play for a total of {FormatTime(targetTime)}";
 
 
 		protected override void LoadConditionData()
 		{
-			bestTime = PlayerPrefs.GetFloat(KeyBest, 0f);
-			cumulativeTime = PlayerPrefs.GetFloat(KeyCumulative, 0f);
+			if (timeType == TimeType.Cumulative)
+			{
+				currentTime = PlayerPrefs.GetFloat(Key, 0f);
+			}
 		}
 
 		public override void ResetData()
 		{
 			currentTime = 0f;
-			bestTime = 0f;
-			cumulativeTime = 0f;
 		}
 
 		protected override void SaveConditionData()
 		{
-			PlayerPrefs.SetFloat(KeyBest, bestTime);
-			PlayerPrefs.SetFloat(KeyCumulative, cumulativeTime);
-			PlayerPrefs.Save();
-		}
-
-		private void OnValidate()
-		{
-			if (string.IsNullOrEmpty(description))
+			if (timeType == TimeType.Cumulative)
 			{
-				var typeLabel = timeType == TimeType.Survival ? "Survive for" : "Play for a total of";
-				description = $"{typeLabel} {FormatTime(targetTime)}";
+				PlayerPrefs.SetFloat(Key, currentTime);
+				PlayerPrefs.Save();
 			}
 		}
 	}
