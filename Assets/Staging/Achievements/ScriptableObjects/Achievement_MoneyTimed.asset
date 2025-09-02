@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1d8a5e72110142b0a7faa9156dd5f52, type: 3}
-  m_Name: Achievement_Money
+  m_Name: Achievement_MoneyTimed
   m_EditorClassIdentifier: 
   title: $$$$ Monnnneeeyyyy $$$$
-  description: Collect 10 coins
-  icon: {fileID: 21300000, guid: 1c3b5cede63e349d9abb9fb8375eb216, type: 3}
-  color: {r: 0.7264151, g: 0.447264, b: 0.08566215, a: 1}
+  description: Collect 5 coins
+  icon: {fileID: 21300000, guid: 1e5e028d7e00345c6b8f59fa0fe6557c, type: 3}
+  color: {r: 0.2325116, g: 0.82897484, b: 0.8962264, a: 1}
   backgroundColor: {r: 1, g: 0.8784314, b: 0.3254902, a: 1}
   isHidden: 0
   conditions:
-  - {fileID: 11400000, guid: f75f7188db56d4270b3bf884f99be322, type: 2}
+  - {fileID: 11400000, guid: 312251017d1d5417d8683f009b1bac7e, type: 2}
   unlockSound: {fileID: 0}

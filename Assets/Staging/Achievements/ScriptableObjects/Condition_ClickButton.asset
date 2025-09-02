@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e9c3fcb37064a599ae607a13851841, type: 3}
-  m_Name: TimeCondition
+  m_Script: {fileID: 11500000, guid: 6ffbc1be026545e09e0ecada6e8b339a, type: 3}
+  m_Name: Condition_ClickButton
   m_EditorClassIdentifier: 
-  conditionName: Wait 10 seconds
-  description: Survive for 10s
-  targetTime: 10
-  timeType: 1
-  trackBestTime: 1
+  conditionName: SimpleSignal
+  description: 
+  expectedSignal: TEST

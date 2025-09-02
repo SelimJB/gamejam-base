@@ -17,4 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 97aa18025e35744c29cfb213242bcd7c, type: 2}
   - {fileID: 11400000, guid: 6b33f1739b8464d57ab7340c4422394b, type: 2}
   - {fileID: 11400000, guid: 9e1c81d092fc64aeaa9010e7d4d336f3, type: 2}
+  - {fileID: 11400000, guid: 8953517c5fddc43fea5aaf10ee4c69f5, type: 2}
   defaultUnlockSound: {fileID: 8300000, guid: 46d52727be22a4c8793a5300dfc8591e, type: 3}

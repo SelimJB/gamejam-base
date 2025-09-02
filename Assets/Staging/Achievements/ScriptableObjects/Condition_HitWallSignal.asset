@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c83f2caba79b407cbc99f987ee5cd07, type: 3}
-  m_Name: CollectionCondition2
+  m_Script: {fileID: 11500000, guid: 6ffbc1be026545e09e0ecada6e8b339a, type: 3}
+  m_Name: Condition_HitWallSignal
   m_EditorClassIdentifier: 
-  conditionName: 
+  conditionName: Hit Wall Signal
   description: 
-  itemType: coin
-  targetQuantity: 100
+  expectedMilestoneType: 1
