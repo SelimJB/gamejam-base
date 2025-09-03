@@ -6,7 +6,6 @@ namespace CoreSystems
 	public static class GameEvents
 	{
 		public static event Action<float> OnTimeElapsed;
-		public static event Action<float> OnSurvivalTime;
 		public static event Action<MetricType, int> OnMetricIncreased;
 		public static event Action<MilestoneType> OnMilestoneReached;
 		public static event Action OnPlayerDeath;
@@ -14,7 +13,6 @@ namespace CoreSystems
 		public static void ClearAllEvents()
 		{
 			OnTimeElapsed = null;
-			OnSurvivalTime = null;
 			OnMetricIncreased = null;
 			OnMilestoneReached = null;
 			OnPlayerDeath = null;
@@ -33,11 +31,6 @@ namespace CoreSystems
 		public static void ReportTimeElapsed(float time)
 		{
 			OnTimeElapsed?.Invoke(time);
-		}
-
-		public static void ReportSurvivalTime(float survivalTime)
-		{
-			OnSurvivalTime?.Invoke(survivalTime);
 		}
 
 		public static void ReportPlayerDeath()

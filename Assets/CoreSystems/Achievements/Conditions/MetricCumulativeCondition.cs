@@ -26,6 +26,7 @@ namespace CoreSystems.Achievements
 			return $"{metric}: {currentQuantity} / {targetQuantity}";
 		}
 
+		
 		public override void Initialize(bool persistProgress)
 		{
 			base.Initialize(persistProgress);
@@ -51,7 +52,6 @@ namespace CoreSystems.Achievements
 			EvaluateCondition();
 		}
 
-		protected override string Key => $"CollectionCondition_{metric}_{GetInstanceID()}";
 
 		protected override void LoadConditionData()
 		{
@@ -68,13 +68,9 @@ namespace CoreSystems.Achievements
 		{
 			currentQuantity = 0;
 		}
-
-		protected override void OnValidate()
-		{
-			if (string.IsNullOrEmpty(description))
-			{
-				description = $"Collect {targetQuantity} {metric}(s)";
-			}
-		}
+		
+		public override string Key => $"CollectionCondition_{metric}_{GetInstanceID()}";
+		public override string DefaultDescription => "Collect {1} {0}(s)";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, targetQuantity };
 	}
 }

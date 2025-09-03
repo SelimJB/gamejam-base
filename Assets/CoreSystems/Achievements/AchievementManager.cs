@@ -258,8 +258,6 @@ namespace CoreSystems.Achievements
 					}
 				}
 			}
-
-			Debug.Log("All achievements have been reset!");
 		}
 	}
 

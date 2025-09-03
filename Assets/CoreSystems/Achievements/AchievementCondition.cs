@@ -5,21 +5,22 @@ namespace CoreSystems.Achievements
 {
 	public abstract class AchievementCondition : ScriptableObject
 	{
-		[Header("Condition Info")]
-		[SerializeField] protected string conditionName;
-		[SerializeField, TextArea(2, 3)] protected string description;
+		[SerializeField] protected bool overrideDescription;
+		[SerializeField, TextArea(2, 3)] protected string customDescriptionTemplate;
 
 		public Action OnConditionMet;
 
 		protected bool persistentProgress;
 
-		public string ConditionName => conditionName;
-		public string Description => description;
+		public string Description => FormatDescriptionText(overrideDescription ? customDescriptionTemplate : DefaultDescription);
 
+		public abstract string DefaultDescription { get; }
 		public abstract bool IsConditionMet();
 		public abstract float GetProgress();
-
-		public virtual string GetProgressDescription() => $"Progress description not implemented for {conditionName}";
+		public virtual string GetProgressDescription() => $"Progress description not implemented for {Key}";
+		protected abstract void SaveConditionData();
+		protected abstract void LoadConditionData();
+		public abstract void ResetData();
 
 		public virtual void Initialize(bool persistentProgress)
 		{
@@ -43,14 +44,6 @@ namespace CoreSystems.Achievements
 			OnConditionMet = null;
 		}
 
-		protected virtual void OnValidate()
-		{
-			if (string.IsNullOrEmpty(conditionName))
-			{
-				conditionName = GetType().Name.Replace("Condition", "");
-			}
-		}
-
 		public void SaveData()
 		{
 			if (!persistentProgress) return;
@@ -65,9 +58,30 @@ namespace CoreSystems.Achievements
 			LoadConditionData();
 		}
 
-		protected virtual string Key => $"Condition_{conditionName}_{GetInstanceID()}";
-		protected abstract void SaveConditionData();
-		protected abstract void LoadConditionData();
-		public abstract void ResetData();
+		public virtual string Key => $"DefaultConditionKey_{name}_{GetInstanceID()}";
+
+		/// <summary>
+		/// Override this method to provide formatting arguments for the description text.
+		/// </summary>
+		protected virtual object[] GetDescriptionFormatArgs()
+		{
+			return new object[] { };
+		}
+
+		/// <summary>
+		/// Formats the description text with placeholders like {0}, {1}, etc.
+		/// </summary>
+		protected virtual string FormatDescriptionText(string text)
+		{
+			try
+			{
+				var args = GetDescriptionFormatArgs();
+				return string.Format(text, args);
+			}
+			catch (FormatException)
+			{
+				return text;
+			}
+		}
 	}
 }

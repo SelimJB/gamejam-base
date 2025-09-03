@@ -36,9 +36,7 @@ namespace CoreSystems.Achievements
 		{
 			return isConditionMet ? 1f : 0f;
 		}
-
-		protected override string Key => $"SignalCondition_{expectedMilestoneType}_{GetInstanceID()}";
-
+		
 		protected override void SaveConditionData()
 		{
 			PlayerPrefs.SetInt(Key, isConditionMet ? 1 : 0);
@@ -54,5 +52,9 @@ namespace CoreSystems.Achievements
 		{
 			isConditionMet = false;
 		}
+		
+		public override string Key => $"SignalCondition_{expectedMilestoneType}_{GetInstanceID()}";
+		public override string DefaultDescription => "Reach the {0} milestone";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { expectedMilestoneType };
 	}
 }

@@ -28,7 +28,6 @@ namespace CoreSystems.Achievements
 
 		public override string GetProgressDescription()
 		{
-			CleanupOldEvents();
 			return $"{metric}: {currentCumulativeQuantity}/{targetQuantity} (in {timeLimit}s)";
 		}
 
@@ -73,9 +72,7 @@ namespace CoreSystems.Achievements
 				currentCumulativeQuantity += evt.quantity;
 			}
 		}
-
-		protected override string Key => $"TimedCumulativeCondition_{metric}_{GetInstanceID()}";
-
+		
 		protected override void LoadConditionData() { }
 
 		protected override void SaveConditionData() { }
@@ -85,13 +82,9 @@ namespace CoreSystems.Achievements
 			recentEvents.Clear();
 			currentCumulativeQuantity = 0;
 		}
-
-		protected override void OnValidate()
-		{
-			if (string.IsNullOrEmpty(description))
-			{
-				description = $"Collect {targetQuantity} {metric}(s) within {timeLimit} seconds";
-			}
-		}
+		
+		public override string Key => $"TimedCumulativeCondition_{metric}_{GetInstanceID()}";
+		public override string DefaultDescription => "Collect {1} {0}(s) within {2} seconds";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, targetQuantity, timeLimit };
 	}
 }

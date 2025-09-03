@@ -84,14 +84,6 @@ namespace CoreSystems.Achievements
 			return $"{seconds}s";
 		}
 
-		public override string Key =>
-			timeType == TimeType.Survival ? $"TimeCondition_{GetInstanceID()}" : $"TimeCondition_{GetInstanceID()}_Cumulative";
-
-		public override string Description2 => timeType == TimeType.Survival
-			? $"Survive for {FormatTime(targetTime)}"
-			: $"Play for a total of {FormatTime(targetTime)}";
-
-
 		protected override void LoadConditionData()
 		{
 			if (timeType == TimeType.Cumulative)
@@ -112,6 +104,26 @@ namespace CoreSystems.Achievements
 				PlayerPrefs.SetFloat(Key, currentTime);
 				PlayerPrefs.Save();
 			}
+		}
+
+		public override string Key =>
+			timeType == TimeType.Survival ? $"TimeCondition_{GetInstanceID()}" : $"TimeCondition_{GetInstanceID()}_Cumulative";
+
+		public override string DefaultDescription => timeType == TimeType.Survival
+			? "Survive for {1}"
+			: "Play for a total of {1}";
+
+		protected override object[] GetDescriptionFormatArgs()
+		{
+			return new object[]
+			{
+				FormatTime(currentTime),
+				FormatTime(targetTime),
+				GetProgress() * 100f,
+				timeType.ToString(),
+				currentTime,
+				targetTime
+			};
 		}
 	}
 }

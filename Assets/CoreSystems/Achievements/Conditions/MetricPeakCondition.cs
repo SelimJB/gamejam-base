@@ -53,7 +53,6 @@ namespace CoreSystems.Achievements
 			}
 		}
 
-		protected override string Key => $"PeakCollectionCondition_{metric}_{GetInstanceID()}";
 
 		protected override void LoadConditionData()
 		{
@@ -71,12 +70,8 @@ namespace CoreSystems.Achievements
 			currentPeakQuantity = 0f;
 		}
 
-		protected override void OnValidate()
-		{
-			if (string.IsNullOrEmpty(description))
-			{
-				description = $"Collect {minPeakQuantity} {metric}(s) in a single collection";
-			}
-		}
+		public override string Key => $"PeakCollectionCondition_{metric}_{GetInstanceID()}";
+		public override string DefaultDescription => "Collect a peak of {1} {0}(s) in a single event";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, minPeakQuantity };
 	}
 }
