@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d8a5e72110142b0a7faa9156dd5f52, type: 3}
   m_Name: Achievement_Time
   m_EditorClassIdentifier: 
-  id: time
   title: Timey woobly blop
-  description: Wait 10 seconds
+  flavorText: 
+  overrideDescription: 0
+  customDescription: Wait 10 seconds
   icon: {fileID: 21300000, guid: ed11e73f38cde4839bf407e61134b35f, type: 3}
   color: {r: 1, g: 0.9842263, b: 0.3915094, a: 1}
   backgroundColor: {r: 0.41037738, g: 0.52732265, b: 1, a: 1}

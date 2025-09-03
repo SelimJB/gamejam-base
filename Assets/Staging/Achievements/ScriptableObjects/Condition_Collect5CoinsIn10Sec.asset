@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09ab11a85c46481f8fa6139212ae515, type: 3}
   m_Name: Condition_Collect5CoinsIn10Sec
   m_EditorClassIdentifier: 
-  conditionName: 
-  description: Collect5CoinsIn10Sec
+  overrideDescription: 0
+  customDescriptionTemplate: Collect {1} {0} within {2} seconds
   metric: 0
   targetQuantity: 5
   timeLimit: 10

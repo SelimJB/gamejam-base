@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e9c3fcb37064a599ae607a13851841, type: 3}
   m_Name: Condition_Time
   m_EditorClassIdentifier: 
-  conditionName: Wait 10 seconds
-  description: Survive for 10s
+  overrideDescription: 0
+  customDescriptionTemplate: Play for a total of {1}
   targetTime: 10
   timeType: 1
-  trackBestTime: 1

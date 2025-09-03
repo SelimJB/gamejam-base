@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c83f2caba79b407cbc99f987ee5cd07, type: 3}
   m_Name: Condition_Collect5Coins
   m_EditorClassIdentifier: 
-  conditionName: 
-  description: Collect 5 coin(s)
+  overrideDescription: 0
+  customDescriptionTemplate: Collect {1} {0}s
   metric: 0
   targetQuantity: 10

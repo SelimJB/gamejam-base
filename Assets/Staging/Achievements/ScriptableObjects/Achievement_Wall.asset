@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Achievement_Wall
   m_EditorClassIdentifier: 
   title: OUCH!
-  description: Hit the wall
+  flavorText: 
+  overrideDescription: 0
+  customDescription: Hit the wall
   icon: {fileID: 21300000, guid: ccc9d6ac40b1c4ccc988551e50912272, type: 3}
   color: {r: 1, g: 0.32549024, b: 0.39706865, a: 1}
   backgroundColor: {r: 0.3915094, g: 0.9250372, b: 1, a: 1}

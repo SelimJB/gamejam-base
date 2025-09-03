@@ -1,7 +1,6 @@
 using System;
 using CoreSystems.Audio;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CoreSystems.Achievements
 {
@@ -11,7 +10,7 @@ namespace CoreSystems.Achievements
 		[SerializeField] private string title;
 		[SerializeField, TextArea(2, 4)] private string flavorText;
 		[SerializeField] private bool overrideDescription;
-		[FormerlySerializedAs("description")] [SerializeField, TextArea(2, 4)] private string customDescription;
+		[SerializeField, TextArea(2, 4)] private string customDescription;
 		[SerializeField] private Sprite icon;
 		[SerializeField] private Color color;
 		[SerializeField] private Color backgroundColor;

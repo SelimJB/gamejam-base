@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffbc1be026545e09e0ecada6e8b339a, type: 3}
   m_Name: Condition_ClickButton
   m_EditorClassIdentifier: 
-  conditionName: SimpleSignal
-  description: 
-  expectedSignal: TEST
+  overrideDescription: 1
+  customDescriptionTemplate: Click the button
+  expectedMilestoneType: 0

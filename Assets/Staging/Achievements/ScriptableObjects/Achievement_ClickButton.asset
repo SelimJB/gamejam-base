@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d8a5e72110142b0a7faa9156dd5f52, type: 3}
   m_Name: Achievement_ClickButton
   m_EditorClassIdentifier: 
-  id: Achievement2
   title: Button clicker
-  description: Click the button
+  flavorText: 
+  overrideDescription: 0
+  customDescription: Click the button
   icon: {fileID: 21300000, guid: 391ff68474daa47bfb627088ffae138b, type: 3}
   color: {r: 1, g: 0.3160377, b: 0.7407961, a: 1}
   backgroundColor: {r: 0.4292453, g: 0.9448561, b: 1, a: 1}
