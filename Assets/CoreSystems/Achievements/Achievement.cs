@@ -17,6 +17,8 @@ namespace CoreSystems.Achievements
 		[SerializeField] private bool isHidden;
 		[SerializeField] private AchievementCondition[] conditions;
 		[SerializeField, PreviewAudioClip] private AudioClip unlockSound;
+		[SerializeField] private bool displaySoftMask;
+		[SerializeField] private float iconPadding = 20f;
 
 		public string Id { get; private set; }
 		public string Title => title;
@@ -27,6 +29,9 @@ namespace CoreSystems.Achievements
 		public AudioClip UnlockSound => unlockSound;
 		public Color Color => color;
 		public Color BackgroundColor => backgroundColor;
+		public bool DisplaySoftMask => displaySoftMask;
+		public float IconPadding => iconPadding;
+
 		public AchievementState State
 		{
 			get

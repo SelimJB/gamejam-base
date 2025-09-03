@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Achievement_Wall
   m_EditorClassIdentifier: 
   title: OUCH!
-  flavorText: 
+  flavorText: Nothing can stop you
   overrideDescription: 0
   customDescription: Hit the wall
   icon: {fileID: 21300000, guid: ccc9d6ac40b1c4ccc988551e50912272, type: 3}
@@ -23,3 +23,5 @@ MonoBehaviour:
   conditions:
   - {fileID: 11400000, guid: a74e7c4bcd022458481e31e4528b8f2b, type: 2}
   unlockSound: {fileID: 0}
+  displaySoftMask: 0
+  iconPadding: 20

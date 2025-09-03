@@ -81,6 +81,12 @@ namespace CoreSystems.Achievements.Editor
 
 			EditorGUILayout.Space();
 
+			EditorGUILayout.LabelField("UI", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("displaySoftMask"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("iconPadding"));
+
+			EditorGUILayout.Space();
+
 			DrawClassicConditionsSection();
 
 			serializedObject.ApplyModifiedProperties();

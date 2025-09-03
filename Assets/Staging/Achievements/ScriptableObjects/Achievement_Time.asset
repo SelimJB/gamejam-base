@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Achievement_Time
   m_EditorClassIdentifier: 
   title: Timey woobly blop
-  flavorText: 
+  flavorText: Patience is its own reward
   overrideDescription: 0
   customDescription: Wait 10 seconds
   icon: {fileID: 21300000, guid: ed11e73f38cde4839bf407e61134b35f, type: 3}
@@ -23,3 +23,5 @@ MonoBehaviour:
   conditions:
   - {fileID: 11400000, guid: 2dadd41ea0a7a4eff9f4011ab8e91a57, type: 2}
   unlockSound: {fileID: 0}
+  displaySoftMask: 0
+  iconPadding: 20

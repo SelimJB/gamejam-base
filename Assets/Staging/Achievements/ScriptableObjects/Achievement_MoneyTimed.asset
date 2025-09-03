@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d8a5e72110142b0a7faa9156dd5f52, type: 3}
   m_Name: Achievement_MoneyTimed
   m_EditorClassIdentifier: 
-  title: $$$$ Monnnneeeyyyy $$$$
-  flavorText: 
+  title: Money, QUICK!
+  flavorText: Beath the clock, grab the cash
   overrideDescription: 0
   customDescription: Collect 5 coins
-  icon: {fileID: 21300000, guid: 1e5e028d7e00345c6b8f59fa0fe6557c, type: 3}
-  color: {r: 0.2325116, g: 0.82897484, b: 0.8962264, a: 1}
+  icon: {fileID: 21300000, guid: a90f6c45dedc54ab6821ab72e9c60d5a, type: 3}
+  color: {r: 1, g: 1, b: 1, a: 1}
   backgroundColor: {r: 1, g: 0.8784314, b: 0.3254902, a: 1}
   isHidden: 0
   conditions:
   - {fileID: 11400000, guid: 312251017d1d5417d8683f009b1bac7e, type: 2}
   unlockSound: {fileID: 0}
+  displaySoftMask: 0
+  iconPadding: 20

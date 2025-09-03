@@ -1,3 +1,4 @@
+using Coffee.UISoftMask;
 using GameJam.UI;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace CoreSystems.Achievements.UI
 		[SerializeField] private TextMeshProUGUI title;
 		[SerializeField] private TextMeshProUGUI description;
 		[SerializeField] private TextMeshProUGUI flavorText;
+		[SerializeField] private SoftMask softMask;
 
 		[SerializeField] private Image achievementPanel;
 		[SerializeField] private GameObject hiddenIconContainer;
@@ -42,6 +44,17 @@ namespace CoreSystems.Achievements.UI
 			icon.color = achievement.Color;
 
 			ChangeState();
+			InitializeSoftMask(achievement);
+		}
+
+		private void InitializeSoftMask(Achievement achievement)
+		{
+			softMask.enabled = achievement.DisplaySoftMask;
+			if (!achievement.DisplaySoftMask)
+				softMask.GetComponent<Image>().enabled = false;
+			var padding = achievement.IconPadding;
+			softMask.rectTransform.offsetMin = new Vector2(padding, padding);
+			softMask.rectTransform.offsetMax = new Vector2(-padding, -padding);
 		}
 
 		public void ChangeState()

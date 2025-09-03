@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Achievement_ClickButton
   m_EditorClassIdentifier: 
   title: Button clicker
-  flavorText: 
+  flavorText: You've pressed a button, wow
   overrideDescription: 0
   customDescription: Click the button
   icon: {fileID: 21300000, guid: 391ff68474daa47bfb627088ffae138b, type: 3}
@@ -23,3 +23,5 @@ MonoBehaviour:
   conditions:
   - {fileID: 11400000, guid: 742de14d3e69c443f877a87e269e7ddf, type: 2}
   unlockSound: {fileID: 8, guid: 46d52727be22a4c8793a5300dfc8591e, type: 3}
+  displaySoftMask: 0
+  iconPadding: 20

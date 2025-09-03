@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Achievement_Money
   m_EditorClassIdentifier: 
   title: $$$$ Monnnneeeyyyy $$$$
-  flavorText: 
+  flavorText: $$$$$$$$$$$$$
   overrideDescription: 0
   customDescription: Collect 10 coins
   icon: {fileID: 21300000, guid: 1c3b5cede63e349d9abb9fb8375eb216, type: 3}
@@ -23,3 +23,5 @@ MonoBehaviour:
   conditions:
   - {fileID: 11400000, guid: f75f7188db56d4270b3bf884f99be322, type: 2}
   unlockSound: {fileID: 0}
+  displaySoftMask: 0
+  iconPadding: 20
