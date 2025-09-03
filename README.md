@@ -6,6 +6,10 @@
 If you use any music by Abstraction (Benjamin Burnes) in your final product, you must include the following credit:
 Music: "Track Title" by Abstraction (Benjamin Burnes), used under CC BY 4.0 — abstractionmusic.com
 
+## Dependencies
+
+### Achievement
+- [SoftMaskForUGUI v3](https://github.com/mob-sakai/SoftMaskForUGUI) is used withing some Achievement UI prefabs.
 
 ## GameEvents
 
