@@ -84,7 +84,7 @@ namespace CoreSystems.Achievements
 		}
 		
 		public override string Key => $"TimedCumulativeCondition_{metric}_{GetInstanceID()}";
-		public override string DefaultDescription => "Collect {1} {0}(s) within {2} seconds";
-		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, targetQuantity, timeLimit };
+		public override string DefaultDescription => "Collect {1} {0} within {2} seconds";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { targetQuantity > 1 ? $"{metric}s" : metric, targetQuantity, timeLimit };
 	}
 }

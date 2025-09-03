@@ -70,7 +70,7 @@ namespace CoreSystems.Achievements
 		}
 		
 		public override string Key => $"CollectionCondition_{metric}_{GetInstanceID()}";
-		public override string DefaultDescription => "Collect {1} {0}(s)";
-		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, targetQuantity };
+		public override string DefaultDescription => "Collect {1} {0}";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { targetQuantity > 1 ? $"{metric}s" : metric, targetQuantity };
 	}
 }

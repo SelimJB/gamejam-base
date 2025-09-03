@@ -83,5 +83,11 @@ namespace CoreSystems.Achievements
 				return text;
 			}
 		}
+
+		protected virtual void OnValidate()
+		{
+			if (string.IsNullOrEmpty(customDescriptionTemplate))
+				customDescriptionTemplate = DefaultDescription;
+		}
 	}
 }

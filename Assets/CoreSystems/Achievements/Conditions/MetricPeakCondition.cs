@@ -71,7 +71,7 @@ namespace CoreSystems.Achievements
 		}
 
 		public override string Key => $"PeakCollectionCondition_{metric}_{GetInstanceID()}";
-		public override string DefaultDescription => "Collect a peak of {1} {0}(s) in a single event";
-		protected override object[] GetDescriptionFormatArgs() => new object[] { metric, minPeakQuantity };
+		public override string DefaultDescription => "Collect a peak of {1} {0} in a single event";
+		protected override object[] GetDescriptionFormatArgs() => new object[] { minPeakQuantity > 1 ? $"{metric}s" : metric, minPeakQuantity };
 	}
 }
