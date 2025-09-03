@@ -40,10 +40,35 @@ namespace CoreSystems.Achievements.Editor
 		{
 			serializedObject.Update();
 
-			EditorGUILayout.LabelField("Achievement Info", EditorStyles.boldLabel);
+			var achievement = target as Achievement;
+
+			EditorGUILayout.LabelField("Overview", EditorStyles.boldLabel);
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("Title:", EditorStyles.boldLabel, GUILayout.Width(80));
+			EditorGUILayout.LabelField(achievement.name);
+			EditorGUILayout.EndHorizontal();
+
+			EditorGUILayout.LabelField("Description:", EditorStyles.boldLabel);
+			var descriptionStyle = new GUIStyle(EditorStyles.label);
+			descriptionStyle.wordWrap = true;
+			descriptionStyle.richText = true;
+			var description = achievement.GetDescription();
+			var content = new GUIContent(description);
+			var height = descriptionStyle.CalcHeight(content, EditorGUIUtility.currentViewWidth - 40);
+			EditorGUILayout.LabelField(description, descriptionStyle, GUILayout.Height(height));
+
+			EditorGUILayout.Space(10);
+
+			EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("title"));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty("description"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("flavorText"));
+
+			var overrideDescriptionProp = serializedObject.FindProperty("overrideDescription");
+			EditorGUILayout.PropertyField(overrideDescriptionProp);
+
+			if (achievement != null && overrideDescriptionProp.boolValue)
+				EditorGUILayout.PropertyField(serializedObject.FindProperty("customDescription"));
+
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("icon"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("color"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("backgroundColor"));

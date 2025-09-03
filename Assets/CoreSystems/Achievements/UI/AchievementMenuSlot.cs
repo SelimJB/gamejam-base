@@ -11,6 +11,7 @@ namespace CoreSystems.Achievements.UI
 		[SerializeField] private Image iconBackground;
 		[SerializeField] private TextMeshProUGUI title;
 		[SerializeField] private TextMeshProUGUI description;
+		[SerializeField] private TextMeshProUGUI flavorText;
 
 		[SerializeField] private Image achievementPanel;
 		[SerializeField] private GameObject hiddenIconContainer;
@@ -65,12 +66,14 @@ namespace CoreSystems.Achievements.UI
 					iconGrayscale.GrayscaleAmount = 0f;
 					iconBackgroundGrayscale.GrayscaleAmount = 0f;
 					title.text = achievement.Title;
-					description.text = achievement.Description;
+					description.text = achievement.GetDescription();
 					title.color = unlockedTextColor;
 					description.color = unlockedTextColor;
 					achievementPanel.color = unlockedPanelColor;
 					lockIcon.gameObject.SetActive(false);
 					openLockIcon.gameObject.SetActive(true);
+					flavorText.color = unlockedTextColor;
+					flavorText.text = achievement.FlavorText ?? "";
 					break;
 				case AchievementState.Locked:
 					hiddenIconContainer.SetActive(false);
@@ -79,7 +82,7 @@ namespace CoreSystems.Achievements.UI
 					iconGrayscale.GrayscaleAmount = lockedGrayscaleAmount;
 					iconBackgroundGrayscale.GrayscaleAmount = lockedGrayscaleAmount;
 					title.text = achievement.Title;
-					description.text = achievement.Description;
+					description.text = achievement.GetDescription();
 					title.color = lockedTextColor;
 					description.color = lockedTextColor;
 					achievementPanel.color = lockedPanelColor;

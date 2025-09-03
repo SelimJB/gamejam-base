@@ -1,30 +1,28 @@
 using System;
 using CoreSystems.Audio;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CoreSystems.Achievements
 {
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Achievement", fileName = "NewAchievement", order = -900)]
 	public class Achievement : ScriptableObject
 	{
-		[Header("Basic Info")]
 		[SerializeField] private string title;
-		[SerializeField, TextArea(2, 4)] private string description;
+		[SerializeField, TextArea(2, 4)] private string flavorText;
+		[SerializeField] private bool overrideDescription;
+		[FormerlySerializedAs("description")] [SerializeField, TextArea(2, 4)] private string customDescription;
 		[SerializeField] private Sprite icon;
 		[SerializeField] private Color color;
 		[SerializeField] private Color backgroundColor;
 		[SerializeField] private bool isHidden;
-
-		[Header("Conditions")]
 		[SerializeField] private AchievementCondition[] conditions;
-
-		[Header("Audio")]
 		[SerializeField, PreviewAudioClip] private AudioClip unlockSound;
 
 		public string Id { get; private set; }
 		public string Title => title;
-		public string Description => description;
 		public Sprite Icon => icon;
+		public string FlavorText => flavorText;
 		public bool IsHidden => isHidden;
 		public AchievementCondition[] Conditions => conditions;
 		public AudioClip UnlockSound => unlockSound;
@@ -54,6 +52,30 @@ namespace CoreSystems.Achievements
 		public void ResetPersistenceFlag()
 		{
 			isUnlockedFromPersistence = false;
+		}
+
+		public string GetDescription(string bullet = "- ")
+		{
+			if (overrideDescription)
+				return customDescription;
+
+			if (conditions == null || conditions.Length == 0)
+				return "No conditions set.";
+
+			if (conditions.Length == 1)
+				return conditions[0].Description;
+
+			var res = new System.Text.StringBuilder();
+
+			foreach (var condition in conditions)
+			{
+				if (condition != null)
+				{
+					res.AppendLine($"{bullet}{condition.Description}");
+				}
+			}
+
+			return res.ToString();
 		}
 
 		public event Action<Achievement> OnUnlocked;

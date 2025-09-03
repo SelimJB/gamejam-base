@@ -48,7 +48,7 @@ namespace CoreSystems.Achievements.UI
 		{
 			icon.sprite = achievement.Icon;
 			title.text = achievement.Title;
-			description.text = achievement.Description;
+			description.text = achievement.FlavorText;
 			icon.color = achievement.Color;
 			iconBackground.color = achievement.BackgroundColor;
 		}

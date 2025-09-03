@@ -145,7 +145,7 @@ namespace CoreSystems.Achievements
 			}
 
 			if (printDebugLogs)
-				Debug.Log($"Achievement Unlocked: {achievement.Title} ({achievement.Id}) - {achievement.Description}");
+				Debug.Log($"Achievement Unlocked: {achievement.Title} ({achievement.Id}) - {achievement.GetDescription()}");
 
 			return true;
 		}
