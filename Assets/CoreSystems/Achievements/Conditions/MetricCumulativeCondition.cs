@@ -5,7 +5,6 @@ namespace CoreSystems.Achievements
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Cumulative", fileName = "Condition_MetricCumulative", order = 10)]
 	public class MetricCumulativeCondition : AchievementCondition
 	{
-		[Header("Collection Settings")]
 		[SerializeField] private MetricType metric;
 		[SerializeField] private int targetQuantity = 100;
 

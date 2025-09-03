@@ -5,7 +5,6 @@ namespace CoreSystems.Achievements
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Peak", fileName = "Condition_MetricPeak", order = 11)]
 	public class MetricPeakCondition : AchievementCondition
 	{
-		[Header("Peak Collection Settings")]
 		[SerializeField] private MetricType metric;
 		[SerializeField] private float minPeakQuantity = 100;
 

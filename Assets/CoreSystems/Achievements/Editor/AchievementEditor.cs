@@ -57,7 +57,7 @@ namespace CoreSystems.Achievements.Editor
 			var height = descriptionStyle.CalcHeight(content, EditorGUIUtility.currentViewWidth - 40);
 			EditorGUILayout.LabelField(description, descriptionStyle, GUILayout.Height(height));
 
-			EditorGUILayout.Space(10);
+			EditorGUILayout.Space(20);
 
 			EditorGUILayout.LabelField("Properties", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("title"));
@@ -92,9 +92,9 @@ namespace CoreSystems.Achievements.Editor
 
 			EditorGUILayout.PropertyField(conditionsProperty, true);
 
-			EditorGUILayout.Space(5);
+			EditorGUILayout.Space(20);
 
-			EditorGUILayout.BeginVertical(GUI.skin.box);
+			EditorGUILayout.BeginVertical();
 			EditorGUILayout.LabelField("Quick Actions", EditorStyles.boldLabel);
 
 			EditorGUILayout.BeginHorizontal();

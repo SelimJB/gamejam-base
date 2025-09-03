@@ -5,7 +5,6 @@ namespace CoreSystems.Achievements
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Time", fileName = "Condition_Time", order = 13)]
 	public class TimeCondition : AchievementCondition
 	{
-		[Header("Time Settings")]
 		[SerializeField] private float targetTime = 60f;
 		[SerializeField] private TimeType timeType = TimeType.Survival;
 

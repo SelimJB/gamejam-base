@@ -6,7 +6,6 @@ namespace CoreSystems.Achievements
 	[CreateAssetMenu(menuName = "ScriptableObjects/Achievements/Condition: Metric Timed", fileName = "Condition_MetricTimed", order = 11)]
 	public class MetricTimedCondition : AchievementCondition
 	{
-		[Header("Timed Cumulative Settings")]
 		[SerializeField] private MetricType metric;
 		[SerializeField] private int targetQuantity = 50;
 		[SerializeField] private float timeLimit = 30f;
