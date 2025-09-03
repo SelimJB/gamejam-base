@@ -1,4 +1,5 @@
 using System;
+using Coffee.UISoftMask;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace CoreSystems.Achievements.UI
 		[SerializeField] private Image iconBackground;
 		[SerializeField] private TextMeshProUGUI title;
 		[SerializeField] private TextMeshProUGUI description;
+		[SerializeField] private SoftMask softMask;
 
 		[Header("Animation Settings")]
 		[SerializeField] private float animationDuration = 0.5f;
@@ -51,8 +53,19 @@ namespace CoreSystems.Achievements.UI
 			description.text = achievement.FlavorText;
 			icon.color = achievement.Color;
 			iconBackground.color = achievement.BackgroundColor;
+			InitializeSoftMask(achievement);
 		}
 
+		private void InitializeSoftMask(Achievement achievement)
+		{
+			softMask.enabled = achievement.DisplaySoftMask;
+			if (!achievement.DisplaySoftMask)
+				softMask.GetComponent<Image>().enabled = false;
+			var padding = achievement.IconPadding;
+			softMask.rectTransform.offsetMin = new Vector2(padding, padding);
+			softMask.rectTransform.offsetMax = new Vector2(-padding, -padding);
+		}
+		
 		public void ShowNotification()
 		{
 			StopCurrentSequence();

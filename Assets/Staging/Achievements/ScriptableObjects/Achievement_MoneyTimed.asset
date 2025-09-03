@@ -24,4 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 312251017d1d5417d8683f009b1bac7e, type: 2}
   unlockSound: {fileID: 0}
   displaySoftMask: 0
-  iconPadding: 20
+  iconPadding: 0
