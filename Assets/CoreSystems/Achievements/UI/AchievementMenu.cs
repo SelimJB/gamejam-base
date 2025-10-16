@@ -59,7 +59,7 @@ namespace CoreSystems.Achievements.UI
 				AchievementManager.OnAchievementUnlocked -= OnAchievementUnlocked;
 				AchievementManager.OnAchievementProgressChanged -= OnAchievementProgressChanged;
 			}
-			
+
 			backgroundPanel.onClick.RemoveListener(Hide);
 		}
 
@@ -106,9 +106,9 @@ namespace CoreSystems.Achievements.UI
 
 		public void Hide()
 		{
-			Show(false);	
+			Show(false);
 		}
-		
+
 		public void ShowInstant(bool show)
 		{
 			currentFadeTween?.Kill();
@@ -165,7 +165,7 @@ namespace CoreSystems.Achievements.UI
 			statsText.text = $"Achievements: {stats.UnlockedAchievements}/{stats.TotalAchievements}";
 
 			if (percentStatsText != null)
-				percentStatsText.text = $"{stats.CompletionPercentage:P0}";
+				percentStatsText.text = $"{stats.CompletionPercentage * 100f:F0}%";
 		}
 
 		private void UpdateAchievementUI(Achievement achievement)

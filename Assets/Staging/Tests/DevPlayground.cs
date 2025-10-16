@@ -1,8 +1,10 @@
+using System;
 using CoreSystems;
 using CoreSystems.Achievements;
 using CoreSystems.Achievements.UI;
 using CoreSystems.Audio;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace Staging
@@ -13,12 +15,18 @@ namespace Staging
 		[SerializeField, PreviewAudioClip] private string stringClip;
 		[SerializeField] SerializableNullable<float> testNullableFloat;
 		[SerializeField] private AchievementMenu achievementMenu;
+		[SerializeField] private bool displayDevPlayground;
+		[SerializeField] private Button toggleAchievementMenuButton;
+		[SerializeField] private Button unlockTestAchievementButton;
 
 		private AudioManager audioManager;
 
 		private void Start()
 		{
 			audioManager = AudioManager.Instance;
+
+			toggleAchievementMenuButton.onClick.AddListener(() => achievementMenu.ToggleVisibility());
+			unlockTestAchievementButton.onClick.AddListener(() => GameEvents.ReportMilestone(MilestoneType.Test));
 		}
 
 		private void Update()
@@ -41,8 +49,16 @@ namespace Staging
 			}
 		}
 
+		private void OnDestroy()
+		{
+			toggleAchievementMenuButton.onClick.RemoveAllListeners();
+			unlockTestAchievementButton.onClick.RemoveAllListeners();
+		}
+
 		private void OnGUI()
 		{
+			if (!displayDevPlayground) return;
+
 			GUILayout.BeginVertical("box");
 			GUI.skin.button.fontSize = 40;
 			GUI.skin.label.fontSize = 40;
