@@ -4,14 +4,13 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![URP](https://img.shields.io/badge/Render%20Pipeline-URP-orange)
 
-Unity Game Jam template with audio, achievements & VFX systems, utilities, curated third-party assets.
-
-Battle-tested Unity template used to create multiple games in game jams. Designed for rapid prototyping with zero-friction setup.
+Unity Game Jam template with audio, achievements & VFX systems, utilities, curated third-party assets.  
+Designed for rapid prototyping with zero-friction setup.
 
 **Try it here**  
 [![Try GameJam Base](https://img.shields.io/badge/Try_it_on-itch.io-FA5C5C?style=for-the-badge&logo=itch.io&logoColor=white)](https://lombardidelavega.itch.io/gamejam-base)
 
-Unity template used to create multiple games in game jams like:  
+Unity template used to create multiple games in game jams, like:  
 [![Space Trains](https://img.shields.io/badge/Space_Trains-Itch.io-FA5C5C?style=flat&logo=itch.io&logoColor=white)](https://lombardidelavega.itch.io/space-trains)
 [![Wheel Power](https://img.shields.io/badge/Wheel_Power-Itch.io-FA5C5C?style=flat&logo=itch.io&logoColor=white)](https://lombardidelavega.itch.io/wheel-power)
 
