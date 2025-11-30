@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ab7699898a24a6c9aea74e9aae551b, type: 3}
+  m_Name: ApiManager
+  m_EditorClassIdentifier: 
+  useMockData: 0
+  apiClient: {fileID: 11400000, guid: caa36810688754931a28e25e4377fdf3, type: 2}
+  mockApiClient: {fileID: 11400000, guid: 6e7714332d6e4441dbefd96bfd142fd3, type: 2}
+  enableDebugLogs: 1
