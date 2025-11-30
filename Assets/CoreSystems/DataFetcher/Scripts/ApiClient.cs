@@ -30,9 +30,6 @@ namespace CoreSystems.DataFetcher
 		public void SetBaseUrl(string url)
 		{
 			baseUrl = url?.TrimEnd('/') ?? "";
-
-			if (enableLogging)
-				Debug.Log($"[DataFetcher] Base URL set to: {baseUrl}");
 		}
 
 		public async Task<Result> Get(string endpoint, Action<string> onSuccess = null, Action<string> onError = null)

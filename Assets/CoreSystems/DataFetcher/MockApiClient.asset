@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: MockApiClient
   m_EditorClassIdentifier: 
   mockResponses:
-  - apiType: 0
-    endpoint: 
-    jsonResponse: 
-    shouldFail: 0
-    errorMessage: 
-    statusCode: 0
-    delaySeconds: 0
+  - baseUrl: https://restcountries.com
+    endpointMappings:
+    - endpoint: /v3.1/alpha/JP
+      jsonAsset: {fileID: 4900000, guid: 7d3cdd9ee191c4b1e8bc1c630f06fe10, type: 3}
+      shouldFail: 0
+      errorMessage: 
+      statusCode: 0
+      delaySeconds: 0
+    defaultJsonAsset: {fileID: 4900000, guid: b11b864bbc9f48e9a0bf7385253f954a, type: 3}
   simulateNetworkDelay: 1
   defaultDelaySeconds: 0.5
   enableLogging: 1

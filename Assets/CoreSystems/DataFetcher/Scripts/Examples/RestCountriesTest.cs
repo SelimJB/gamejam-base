@@ -24,7 +24,9 @@ namespace CoreSystems.DataFetcher
 			try
 			{
 				var country = await restCountriesExample.GetCountryByCodeAsync("JP");
-				Debug.Log($"Country: {country.name}, Capital: {country.capital[0]}, Region: {country.region}");
+				var country2 = await restCountriesExample.GetCountryByCodeAsync("FR");
+				Debug.Log($"Country: {country.name.common}, Capital: {country.capital[0]}, Region: {country.region}");
+				Debug.Log($"Country: {country2.name.common}, Capital: {country2.capital[0]}, Region: {country2.region}");
 			}
 			catch (Exception ex)
 			{

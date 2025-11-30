@@ -6,41 +6,12 @@ using UnityEngine;
 
 namespace CoreSystems.DataFetcher
 {
-	public enum ApiType
-	{
-		Any,
-		RestCountries,
-		GameBackend,
-		Analytics
-	}
-
-	[Serializable]
-	public class MockResponse
-	{
-		[Header("API Context")]
-		public ApiType apiType = ApiType.Any;
-
-		[Header("Endpoint Configuration")]
-		public string endpoint;
-		[TextArea(3, 10)]
-		public string jsonResponse;
-
-		[Header("Error Simulation")]
-		public bool shouldFail;
-		[TextArea(2, 5)]
-		public string errorMessage;
-		public int statusCode = 200;
-
-		[Header("Network Simulation")]
-		[Range(0f, 5f)]
-		public float delaySeconds = 0.1f;
-	}
-
-	[CreateAssetMenu(fileName = "MockApiClient", menuName = "ScriptableObjects/Api/MockApiClient")]
+	[CreateAssetMenu(fileName = "MockApiClient", menuName = "CoreSystems/Api/MockApiClient")]
 	public class MockApiClient : ScriptableObject, IApiClient
 	{
-		[Header("Mock Responses")]
-		[SerializeField] private List<MockResponse> mockResponses = new List<MockResponse>();
+		[Header("Mock Responses by Base URL")]
+		[Tooltip("Group mock responses by API base URL")]
+		[SerializeField] private List<MockResponse> mockResponses = new();
 
 		[Header("Network Simulation")]
 		[SerializeField] private bool simulateNetworkDelay = true;
@@ -49,9 +20,8 @@ namespace CoreSystems.DataFetcher
 		[Header("Debug")]
 		[SerializeField] private bool enableLogging = true;
 
-		private string baseUrl;
+		private string currentBaseUrl;
 		private string authToken;
-		private ApiType currentApiType = ApiType.Any;
 
 		public void SetAuthToken(string token)
 		{
@@ -62,102 +32,70 @@ namespace CoreSystems.DataFetcher
 
 		public void SetBaseUrl(string url)
 		{
-			baseUrl = url;
-
-			// Détecter le type d'API selon l'URL
-			currentApiType = DetectApiType(url);
+			currentBaseUrl = NormalizeUrl(url);
 
 			if (enableLogging)
-				Debug.Log($"[MockDataFetcher] Base URL set to: {baseUrl} (Detected API: {currentApiType})");
+				Debug.Log($"[MockDataFetcher] Base URL set to: {currentBaseUrl}");
 		}
 
-		/// <summary>
-		/// Set the API context manually (alternative to URL detection)
-		/// </summary>
-		public void SetApiType(ApiType apiType)
+		private string NormalizeUrl(string url)
 		{
-			currentApiType = apiType;
-			if (enableLogging)
-				Debug.Log($"[MockDataFetcher] API type set to: {apiType}");
+			return string.IsNullOrEmpty(url) ? "" : url.TrimEnd('/').ToLower();
 		}
 
-		private ApiType DetectApiType(string url)
-		{
-			if (string.IsNullOrEmpty(url)) return ApiType.Any;
-
-			url = url.ToLower();
-			if (url.Contains("restcountries")) return ApiType.RestCountries;
-			if (url.Contains("game") || url.Contains("backend")) return ApiType.GameBackend;
-			if (url.Contains("analytics")) return ApiType.Analytics;
-
-			return ApiType.Any;
-		}
-
-		/// <summary>
-		/// Add a mock response for testing
-		/// </summary>
-		public void AddMockResponse(string endpoint, string jsonResponse, bool shouldFail = false, string errorMessage = "", int statusCode = 200)
-		{
-			mockResponses.Add(new MockResponse
-			{
-				endpoint = endpoint,
-				jsonResponse = jsonResponse,
-				shouldFail = shouldFail,
-				errorMessage = errorMessage,
-				statusCode = statusCode
-			});
-		}
-
-		/// <summary>
-		/// Add a mock response with object serialization
-		/// </summary>
-		public void AddMockResponse<T>(string endpoint, T responseObject, bool shouldFail = false, string errorMessage = "", int statusCode = 200)
-		{
-			string json = JsonUtility.ToJson(responseObject);
-			AddMockResponse(endpoint, json, shouldFail, errorMessage, statusCode);
-		}
 
 		public async Task<Result> Get(string endpoint, Action<string> onSuccess = null, Action<string> onError = null)
 		{
 			if (enableLogging)
 				Debug.Log($"[MockDataFetcher] 🎭 GET: {endpoint}");
 
-			// Simuler la latence réseau
 			if (simulateNetworkDelay)
 			{
 				await Task.Delay((int)(defaultDelaySeconds * 1000));
 			}
 
-			var mockResponse = FindMockResponse(endpoint);
+			var mapping = FindEndpointMapping(endpoint);
 
-			if (mockResponse == null)
+			if (mapping == null)
 			{
 				var errorResult = Result.CreateError($"No mock response found for endpoint: {endpoint}", 404);
+
 				if (enableLogging)
 					Debug.LogError($"[MockDataFetcher] ❌ No mock found for: {endpoint}");
 				onError?.Invoke(errorResult.ErrorMessage);
 				return errorResult;
 			}
 
-			// Simuler délai spécifique à la réponse
-			if (mockResponse.delaySeconds > 0)
+			if (mapping.delaySeconds > 0)
 			{
-				await Task.Delay((int)(mockResponse.delaySeconds * 1000));
+				await Task.Delay((int)(mapping.delaySeconds * 1000));
 			}
 
-			if (mockResponse.shouldFail)
+			if (mapping.shouldFail)
 			{
-				var errorResult = Result.CreateError(mockResponse.errorMessage, mockResponse.statusCode);
+				var errorResult = Result.CreateError(mapping.errorMessage, mapping.statusCode);
 				if (enableLogging)
-					Debug.LogError($"[MockDataFetcher] ❌ Simulated error for {endpoint}: {mockResponse.errorMessage}");
+					Debug.LogError($"[MockDataFetcher] ❌ Simulated error for {endpoint}: {mapping.errorMessage}");
 				onError?.Invoke(errorResult.ErrorMessage);
 				return errorResult;
 			}
 
-			var successResult = Result.CreateSuccess(mockResponse.jsonResponse, mockResponse.statusCode);
+			var json = GetJsonFromMapping(mapping, endpoint);
+
+			if (string.IsNullOrEmpty(json))
+			{
+				var errorResult = Result.CreateError($"No JSON data available for endpoint: {endpoint}", 500);
+				if (enableLogging)
+					Debug.LogError($"[MockDataFetcher] ❌ No JSON data for: {endpoint}");
+				onError?.Invoke(errorResult.ErrorMessage);
+				return errorResult;
+			}
+
+			var successResult = Result.CreateSuccess(json, mapping.statusCode);
+
 			if (enableLogging)
-				Debug.Log($"[MockDataFetcher] ✅ Mock response for {endpoint} (Status: {mockResponse.statusCode})");
-			onSuccess?.Invoke(mockResponse.jsonResponse);
+				Debug.Log($"[MockDataFetcher] ✅ Mock response for {endpoint} (Status: {mapping.statusCode})");
+			onSuccess?.Invoke(json);
 			return successResult;
 		}
 
@@ -166,15 +104,14 @@ namespace CoreSystems.DataFetcher
 			if (enableLogging)
 				Debug.Log($"[MockDataFetcher] 🎭 POST: {endpoint}\nData: {jsonData}");
 
-			// Simuler la latence réseau
 			if (simulateNetworkDelay)
 			{
 				await Task.Delay((int)(defaultDelaySeconds * 1000));
 			}
 
-			var mockResponse = FindMockResponse(endpoint);
+			var mapping = FindEndpointMapping(endpoint);
 
-			if (mockResponse == null)
+			if (mapping == null)
 			{
 				var errorResult = Result.CreateError($"No mock response found for endpoint: {endpoint}", 404);
 				if (enableLogging)
@@ -183,71 +120,119 @@ namespace CoreSystems.DataFetcher
 				return errorResult;
 			}
 
-			// Simuler délai spécifique à la réponse
-			if (mockResponse.delaySeconds > 0)
-			{
-				await Task.Delay((int)(mockResponse.delaySeconds * 1000));
-			}
+			if (mapping.delaySeconds > 0)
+				await Task.Delay((int)(mapping.delaySeconds * 1000));
 
-			if (mockResponse.shouldFail)
+			if (mapping.shouldFail)
 			{
-				var errorResult = Result.CreateError(mockResponse.errorMessage, mockResponse.statusCode);
+				var errorResult = Result.CreateError(mapping.errorMessage, mapping.statusCode);
 				if (enableLogging)
-					Debug.LogError($"[MockDataFetcher] ❌ Simulated POST error for {endpoint}: {mockResponse.errorMessage}");
+					Debug.LogError($"[MockDataFetcher] ❌ Simulated POST error for {endpoint}: {mapping.errorMessage}");
 				onError?.Invoke(errorResult.ErrorMessage);
 				return errorResult;
 			}
 
-			var successResult = Result.CreateSuccess(mockResponse.jsonResponse, mockResponse.statusCode);
+			var json = GetJsonFromMapping(mapping, endpoint);
+
+			if (string.IsNullOrEmpty(json))
+			{
+				var errorResult = Result.CreateError($"No JSON data available for endpoint: {endpoint}", 500);
+				if (enableLogging)
+					Debug.LogError($"[MockDataFetcher] ❌ No JSON data for POST: {endpoint}");
+				onError?.Invoke(errorResult.ErrorMessage);
+				return errorResult;
+			}
+
+			var successResult = Result.CreateSuccess(json, mapping.statusCode);
 			if (enableLogging)
-				Debug.Log($"[MockDataFetcher] ✅ Mock POST response for {endpoint} (Status: {mockResponse.statusCode})");
-			onSuccess?.Invoke(mockResponse.jsonResponse);
+				Debug.Log($"[MockDataFetcher] ✅ Mock POST response for {endpoint} (Status: {mapping.statusCode})");
+			onSuccess?.Invoke(json);
 			return successResult;
 		}
 
-		private MockResponse FindMockResponse(string endpoint)
+		private EndpointMapping FindEndpointMapping(string endpoint)
 		{
-			// Filtrer d'abord par type d'API
-			var candidateResponses = mockResponses.Where(r =>
-				r.apiType == ApiType.Any || r.apiType == currentApiType).ToList();
+			var mockResponse = mockResponses.FirstOrDefault(m =>
+				NormalizeUrl(m.baseUrl) == currentBaseUrl);
 
-			// Try exact match first
-			foreach (var response in candidateResponses)
+			if (mockResponse == null)
 			{
-				if (response.endpoint == endpoint)
-					return response;
+				if (enableLogging)
+					Debug.LogWarning($"[MockDataFetcher] No MockResponse found for baseUrl: {currentBaseUrl}");
+				return null;
 			}
 
-			// Try partial match (useful for endpoints with parameters)
-			foreach (var response in candidateResponses)
+			var mapping = mockResponse.endpointMappings.FirstOrDefault(m =>
+				m.endpoint == endpoint);
+
+			if (mapping != null)
+				return mapping;
+
+			mapping = mockResponse.endpointMappings.FirstOrDefault(m =>
+				endpoint.Contains(m.endpoint) || m.endpoint.Contains(endpoint));
+
+			if (mapping != null)
+				return mapping;
+
+			if (mockResponse.defaultJsonAsset == null) return null;
+
+			if (enableLogging)
+				Debug.Log($"[MockDataFetcher] Using defaultJsonAsset for endpoint: {endpoint}");
+
+			return new EndpointMapping
 			{
-				if (endpoint.Contains(response.endpoint) || response.endpoint.Contains(endpoint))
-					return response;
+				endpoint = endpoint,
+				jsonAsset = mockResponse.defaultJsonAsset,
+				statusCode = 200
+			};
+		}
+
+		private string GetJsonFromMapping(EndpointMapping mapping, string endpoint)
+		{
+			if (mapping.jsonAsset != null)
+			{
+				return mapping.jsonAsset.text;
 			}
 
-			return null;
-		}
+			var mockResponse = mockResponses.FirstOrDefault(m =>
+				NormalizeUrl(m.baseUrl) == currentBaseUrl);
 
-		/// <summary>
-		/// Clear all mock responses
-		/// </summary>
-		public void ClearMockResponses()
-		{
-			mockResponses.Clear();
-		}
+			if (mockResponse?.defaultJsonAsset == null) return null;
 
-		/// <summary>
-		/// Setup common mock responses for testing
-		/// </summary>
-		[ContextMenu("Setup Test Data")]
-		public void SetupTestData()
-		{
-			ClearMockResponses();
+			if (enableLogging)
+				Debug.Log($"[MockDataFetcher] Using defaultJsonAsset for endpoint: {endpoint}");
 
-			// Example mock responses
-			AddMockResponse("/api/user/profile", "{\"name\":\"Test User\",\"level\":5,\"score\":1250}");
-			AddMockResponse("/api/leaderboard", "{\"players\":[{\"name\":\"Player1\",\"score\":2000},{\"name\":\"Player2\",\"score\":1500}]}");
-			AddMockResponse("/api/error-test", "", true, "Simulated server error", 500);
+			return mockResponse.defaultJsonAsset.text;
 		}
+	}
+
+	[Serializable]
+	public class EndpointMapping
+	{
+		[Header("Endpoint")]
+		public string endpoint;
+		[Header("Response")]
+		public TextAsset jsonAsset;
+		[Header("Error Simulation (Optional)")]
+		public bool shouldFail;
+		[TextArea(2, 5)] public string errorMessage;
+		public int statusCode = 200;
+
+		[Header("Network Simulation")]
+		[Range(0f, 5f)] public float delaySeconds = 0.1f;
+	}
+
+	[Serializable]
+	public class MockResponse
+	{
+		[Header("Base URL")]
+		[Tooltip("Base URL for this API (e.g., https://restcountries.com)")]
+		public string baseUrl;
+		[Header("Endpoint Mappings")]
+		[Tooltip("Specific endpoint → JSON mappings")]
+		public List<EndpointMapping> endpointMappings = new();
+		[Header("Default Response")]
+		[Tooltip("Used when endpoint is not found or has no jsonAsset")]
+		public TextAsset defaultJsonAsset;
 	}
 }

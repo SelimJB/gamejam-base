@@ -12,16 +12,6 @@ namespace CoreSystems.DataFetcher
 		[Header("Debug")]
 		[SerializeField] private bool enableDebugLogs = true;
 
-		private IApiClient GetClient()
-		{
-			IApiClient client = useMockData ? mockApiClient : apiClient;
-
-			if (enableDebugLogs)
-				Debug.Log($"[ApiClientFactory] Created {(useMockData ? "Mock" : "Real")} client: {client.GetType().Name}");
-
-			return client;
-		}
-
-		public IApiClient Client => GetClient();
+		public IApiClient Client => useMockData ? mockApiClient : apiClient;
 	}
 }
