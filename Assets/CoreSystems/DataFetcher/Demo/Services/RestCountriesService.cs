@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace CoreSystems.DataFetcher
+namespace CoreSystems.DataFetcher.Demo
 {
 	[CreateAssetMenu(fileName = "RestCountriesService", menuName = "ScriptableObjects/Api/Services/RestCountriesService")]
 	public class RestCountriesService : ScriptableObject

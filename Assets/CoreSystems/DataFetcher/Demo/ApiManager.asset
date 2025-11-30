@@ -15,4 +15,6 @@ MonoBehaviour:
   useMockData: 0
   apiClient: {fileID: 11400000, guid: caa36810688754931a28e25e4377fdf3, type: 2}
   mockApiClient: {fileID: 11400000, guid: 6e7714332d6e4441dbefd96bfd142fd3, type: 2}
+  services:
+  - {fileID: 11400000, guid: e18a88114d9484a188171cc638c4eac9, type: 2}
   enableDebugLogs: 1

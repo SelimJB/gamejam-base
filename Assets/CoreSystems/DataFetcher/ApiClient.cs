@@ -9,7 +9,6 @@ namespace CoreSystems.DataFetcher
 	public class ApiClient : ScriptableObject, IApiClient
 	{
 		[Header("Configuration")]
-		[SerializeField] private string baseUrl = "";
 		[SerializeField] private float timeoutSeconds = 30f;
 		[SerializeField] private int maxRetries = 3;
 		[SerializeField] private float retryDelaySeconds = 1f;
@@ -17,6 +16,7 @@ namespace CoreSystems.DataFetcher
 		[Header("Debug")]
 		[SerializeField] private bool enableLogging = true;
 
+		private string baseUrl;
 		private string authToken;
 
 		public void SetAuthToken(string token)

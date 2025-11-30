@@ -50,9 +50,7 @@ namespace CoreSystems.DataFetcher
 				Debug.Log($"[MockDataFetcher] 🎭 GET: {endpoint}");
 
 			if (simulateNetworkDelay)
-			{
 				await Task.Delay((int)(defaultDelaySeconds * 1000));
-			}
 
 			var mapping = FindEndpointMapping(endpoint);
 
@@ -67,9 +65,7 @@ namespace CoreSystems.DataFetcher
 			}
 
 			if (mapping.delaySeconds > 0)
-			{
 				await Task.Delay((int)(mapping.delaySeconds * 1000));
-			}
 
 			if (mapping.shouldFail)
 			{
@@ -105,9 +101,7 @@ namespace CoreSystems.DataFetcher
 				Debug.Log($"[MockDataFetcher] 🎭 POST: {endpoint}\nData: {jsonData}");
 
 			if (simulateNetworkDelay)
-			{
 				await Task.Delay((int)(defaultDelaySeconds * 1000));
-			}
 
 			var mapping = FindEndpointMapping(endpoint);
 
@@ -144,9 +138,12 @@ namespace CoreSystems.DataFetcher
 			}
 
 			var successResult = Result.CreateSuccess(json, mapping.statusCode);
+
 			if (enableLogging)
 				Debug.Log($"[MockDataFetcher] ✅ Mock POST response for {endpoint} (Status: {mapping.statusCode})");
+
 			onSuccess?.Invoke(json);
+
 			return successResult;
 		}
 
