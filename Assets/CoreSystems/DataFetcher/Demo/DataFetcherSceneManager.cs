@@ -1,9 +1,7 @@
 using System;
-using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace CoreSystems.DataFetcher.Demo
@@ -41,9 +39,7 @@ namespace CoreSystems.DataFetcher.Demo
 
 			loaderCanvasGroup = loader.GetComponent<CanvasGroup>();
 			if (loaderCanvasGroup == null)
-			{
 				loaderCanvasGroup = loader.AddComponent<CanvasGroup>();
-			}
 
 			loaderCanvasGroup.alpha = 0f;
 			loaderCanvasGroup.blocksRaycasts = false;
@@ -89,7 +85,7 @@ namespace CoreSystems.DataFetcher.Demo
 				return;
 
 			var rectTransform = loader.GetComponent<RectTransform>();
-			var targetTransform = rectTransform != null ? rectTransform : loader.transform;
+			var targetTransform = rectTransform != null ? (Transform)rectTransform : loader.transform;
 
 			loaderRotationTween = targetTransform
 				.DORotate(new Vector3(0, 0, -360f), 1f, RotateMode.FastBeyond360)
@@ -108,46 +104,6 @@ namespace CoreSystems.DataFetcher.Demo
 			}
 		}
 
-		private async Task LoadImageFromUrl(string imageUrl, Image targetImage)
-		{
-			if (string.IsNullOrEmpty(imageUrl) || targetImage == null)
-			{
-				Debug.LogWarning("[DataFetcherSceneManager] Invalid image URL or target image");
-				return;
-			}
-
-			try
-			{
-				using var request = UnityWebRequestTexture.GetTexture(imageUrl);
-				var operation = request.SendWebRequest();
-
-				while (!operation.isDone)
-				{
-					await Task.Yield();
-				}
-
-				if (request.result == UnityWebRequest.Result.Success)
-				{
-					var texture = DownloadHandlerTexture.GetContent(request);
-
-					var sprite = Sprite.Create(texture,
-						new Rect(0, 0, texture.width, texture.height),
-						new Vector2(0.5f, 0.5f));
-
-					targetImage.sprite = sprite;
-
-					Debug.Log($"[DataFetcherSceneManager] ✅ Image loaded from: {imageUrl}");
-				}
-				else
-				{
-					Debug.LogError($"[DataFetcherSceneManager] ❌ Failed to load image: {imageUrl} - {request.error}");
-				}
-			}
-			catch (Exception ex)
-			{
-				Debug.LogError($"[DataFetcherSceneManager] Exception loading image: {ex.Message}");
-			}
-		}
 
 		private async void OnGetFactButtonClicked()
 		{
@@ -177,7 +133,7 @@ namespace CoreSystems.DataFetcher.Demo
 
 				if (country.flags != null && !string.IsNullOrEmpty(country.flags.png))
 				{
-					await LoadImageFromUrl(country.flags.png, flagImage);
+					await ImageLoader.LoadImageAsync(country.flags.png, flagImage);
 				}
 			}
 			catch (Exception ex)
@@ -202,7 +158,7 @@ namespace CoreSystems.DataFetcher.Demo
 
 				if (country.flags != null && !string.IsNullOrEmpty(country.flags.png))
 				{
-					await LoadImageFromUrl(country.flags.png, flagImage);
+					await ImageLoader.LoadImageAsync(country.flags.png, flagImage);
 				}
 			}
 			catch (Exception ex)
